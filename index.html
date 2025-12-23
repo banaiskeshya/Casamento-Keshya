@@ -969,7 +969,14 @@ body::after{
         ],
         bridesmaids: [
           { name: "Meilleure amie", phone: "", notes: "Demoiselle d’honneur", status: "pending" }
-        ]
+        ],
+        witnesses: [
+  { name: "Témoin 1", phone: "", notes: "Témoin principal" }
+],
+companions: [
+  { name: "Dame de compagnie", phone: "", notes: "" }
+]
+
       };
 
       localStorage.setItem(KEY, JSON.stringify(state));
@@ -1262,5 +1269,6 @@ body::after{
   </script>
 </body>
 </html>
+
 
 
