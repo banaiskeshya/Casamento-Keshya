@@ -1164,6 +1164,9 @@ companions: [
     document.getElementById("openAddExpense").addEventListener("click", ()=> openModal("expenseModal"));
     document.getElementById("openAddGuest").addEventListener("click", ()=> openModal("guestModal"));
     document.getElementById("openAddBridesmaid").addEventListener("click", ()=> openModal("bridesmaidModal"));
+    document.getElementById("openAddWitness").addEventListener("click", ()=> openModal("witnessModal"));
+document.getElementById("openAddCompanion").addEventListener("click", ()=> openModal("companionModal"));
+
 
     document.addEventListener("click", (e) => {
       const title = e.target?.dataset?.done;
@@ -1269,6 +1272,7 @@ companions: [
   </script>
 </body>
 </html>
+
 
 
 
