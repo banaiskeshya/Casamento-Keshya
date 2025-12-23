@@ -915,7 +915,7 @@ body::after{
   </div>
 
   <script>
-    const KEY = "wedding_app_v1";
+    const KEY = "wedding_app_v2";
 
     function formatMoney(n){
       try { return new Intl.NumberFormat("fr-FR").format(n) + " FCFA"; }
@@ -1010,6 +1010,24 @@ companions: [
       if(closeId) closeModal(closeId);
       if(e.target.classList.contains("modal")) e.target.classList.remove("open");
     });
+    document.addEventListener("click", (e) => {
+  const idx = e.target?.dataset?.delW;
+  if(idx === undefined) return;
+  const state = loadState();
+  state.witnesses.splice(Number(idx), 1);
+  saveState(state);
+  render();
+});
+
+document.addEventListener("click", (e) => {
+  const idx = e.target?.dataset?.delC;
+  if(idx === undefined) return;
+  const state = loadState();
+  state.companions.splice(Number(idx), 1);
+  saveState(state);
+  render();
+});
+
 
     function labelRsvp(v){
       if(v === "confirmed") return "Confirmé";
@@ -1147,7 +1165,50 @@ companions: [
           `;
           bmUl.appendChild(li);
         });
-      }
+      } 
+      // Witnesses list
+const wUl = document.getElementById("witnessesList");
+wUl.innerHTML = "";
+if(!state.witnesses?.length){
+  wUl.innerHTML = `<li class="item muted">Aucun témoin ajouté.</li>`;
+} else {
+  state.witnesses.forEach((w, i) => {
+    const li = document.createElement("li");
+    li.className = "item";
+    li.innerHTML = `
+      <div class="item-left">
+        <div>
+          <div class="item-title">${escapeHtml(w.name)}</div>
+          <div class="item-sub">${escapeHtml(w.notes || "Témoin")} ${w.phone ? "• " + escapeHtml(w.phone) : ""}</div>
+        </div>
+      </div>
+      <button class="mini-btn danger" data-del-w="${i}">Suppr</button>
+    `;
+    wUl.appendChild(li);
+  });
+}
+
+// Companions list
+const cUl = document.getElementById("companionsList");
+cUl.innerHTML = "";
+if(!state.companions?.length){
+  cUl.innerHTML = `<li class="item muted">Aucune dame de compagnie ajoutée.</li>`;
+} else {
+  state.companions.forEach((c, i) => {
+    const li = document.createElement("li");
+    li.className = "item";
+    li.innerHTML = `
+      <div class="item-left">
+        <div>
+          <div class="item-title">${escapeHtml(c.name)}</div>
+          <div class="item-sub">${escapeHtml(c.notes || "Dame de compagnie")} ${c.phone ? "• " + escapeHtml(c.phone) : ""}</div>
+        </div>
+      </div>
+      <button class="mini-btn danger" data-del-c="${i}">Suppr</button>
+    `;
+    cUl.appendChild(li);
+  });
+}
 
       document.getElementById("weddingDate").value = profile.weddingDate;
       document.getElementById("budgetBaseInput").value = profile.budgetBase;
@@ -1269,9 +1330,40 @@ document.getElementById("openAddCompanion").addEventListener("click", ()=> openM
     if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/Casamento-Keshya/sw.js");
   }
+    document.getElementById("witnessForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const state = loadState();
+  state.witnesses = state.witnesses || [];
+  state.witnesses.push({
+    name: document.getElementById("wName").value.trim(),
+    phone: document.getElementById("wPhone").value.trim(),
+    notes: document.getElementById("wNotes").value.trim()
+  });
+  saveState(state);
+  closeModal("witnessModal");
+  e.target.reset();
+  render();
+});
+
+document.getElementById("companionForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const state = loadState();
+  state.companions = state.companions || [];
+  state.companions.push({
+    name: document.getElementById("cName").value.trim(),
+    phone: document.getElementById("cPhone").value.trim(),
+    notes: document.getElementById("cNotes").value.trim()
+  });
+  saveState(state);
+  closeModal("companionModal");
+  e.target.reset();
+  render();
+});
+
   </script>
 </body>
 </html>
+
 
 
 
