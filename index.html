@@ -820,6 +820,74 @@ body::after{
     </div>
   </div>
 
+  <!-- MODAL: Ajouter témoin -->
+<div class="modal" id="witnessModal" role="dialog" aria-modal="true" aria-label="Ajouter un témoin">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h3>Ajouter un témoin</h3>
+      <button class="icon-btn" data-close="witnessModal">✕</button>
+    </div>
+
+    <form id="witnessForm" class="form">
+      <label>
+        Nom
+        <input type="text" id="wName" required />
+      </label>
+      <label>
+        Téléphone (option)
+        <input type="tel" id="wPhone" placeholder="+241..." />
+      </label>
+      <label>
+        Notes (option)
+        <input type="text" id="wNotes" placeholder="rôle, tenue, etc." />
+      </label>
+      <button class="btn btn-primary btn-full" type="submit">Ajouter</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: Ajouter dame de compagnie -->
+<div class="modal" id="companionModal" role="dialog" aria-modal="true" aria-label="Ajouter une dame de compagnie">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h3>Ajouter une dame de compagnie</h3>
+      <button class="icon-btn" data-close="companionModal">✕</button>
+    </div>
+
+    <form id="companionForm" class="form">
+      <label>
+        Nom
+        <input type="text" id="cName" required />
+      </label>
+      <label>
+        Téléphone (option)
+        <input type="tel" id="cPhone" placeholder="+241..." />
+      </label>
+      <label>
+        Notes (option)
+        <input type="text" id="cNotes" placeholder="rôle, tenue, etc." />
+      </label>
+      <button class="btn btn-primary btn-full" type="submit">Ajouter</button>
+    </form>
+  </div>
+</div>
+
+ <!-- Témoins -->
+<div class="card mt">
+  <h3 style="font-size:14px;font-weight:950;color:var(--navy);">Témoins</h3>
+  <p class="muted">Ajoute tes témoins (ils comptent aussi dans les invités).</p>
+  <button class="btn btn-outline" id="openAddWitness">+ Témoin</button>
+  <ul class="list mt-sm" id="witnessesList"></ul>
+</div>
+
+<!-- Dame(s) de compagnie -->
+<div class="card mt">
+  <h3 style="font-size:14px;font-weight:950;color:var(--navy);">Dame(s) de compagnie</h3>
+  <p class="muted">Ajoute ta/tes dame(s) de compagnie.</p>
+  <button class="btn btn-outline" id="openAddCompanion">+ Dame de compagnie</button>
+  <ul class="list mt-sm" id="companionsList"></ul>
+</div>
+ 
   <!-- MODAL: Ajouter demoiselle d’honneur -->
   <div class="modal" id="bridesmaidModal" role="dialog" aria-modal="true" aria-label="Ajouter une demoiselle d’honneur">
     <div class="sheet">
@@ -1194,4 +1262,5 @@ body::after{
   </script>
 </body>
 </html>
+
 
