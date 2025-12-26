@@ -1005,6 +1005,11 @@ companions: [
 
     function openModal(id){ document.getElementById(id).classList.add("open"); }
     function closeModal(id){ document.getElementById(id).classList.remove("open"); }
+document.addEventListener("click", (e) => {
+  const closeId = e.target?.dataset?.close;
+  if(closeId) closeModal(closeId);
+  if(e.target.classList.contains("modal")) e.target.classList.remove("open");
+});
 
     document.addEventListener("click", (e) => {
   const idx = e.target?.dataset?.delW;
@@ -1323,43 +1328,51 @@ document.getElementById("openAddCompanion").addEventListener("click", ()=> openM
     });
 
     // Init
-    document.getElementById("witnessForm").addEventListener("submit", (e)=>{
-  e.preventDefault();
-  const state = loadState();
-  state.witnesses = state.witnesses || [];
-  state.witnesses.push({
-    name: document.getElementById("wName").value.trim(),
-    phone: document.getElementById("wPhone").value.trim(),
-    notes: document.getElementById("wNotes").value.trim()
+   const wUl = document.getElementById("witnessesList");
+wUl.innerHTML = "";
+if(!witnesses?.length){
+  wUl.innerHTML = `<li class="item muted">Aucun témoin ajouté.</li>`;
+} else {
+  witnesses.forEach((w, i) => {
+    const li = document.createElement("li");
+    li.className = "item";
+    li.innerHTML = `
+      <div class="item-left">
+        <div>
+          <div class="item-title">${escapeHtml(w.name)}</div>
+          <div class="item-sub">${escapeHtml(w.notes || "Témoin")} ${w.phone ? "• " + escapeHtml(w.phone) : ""}</div>
+        </div>
+      </div>
+      <button class="mini-btn danger" data-del-w="${i}">Suppr</button>
+    `;
+    wUl.appendChild(li);
   });
-  saveState(state);
-  closeModal("witnessModal");
-  e.target.reset();
-  render();
-});
+}
 
-document.getElementById("companionForm").addEventListener("submit", (e)=>{
-  e.preventDefault();
-  const state = loadState();
-  state.companions = state.companions || [];
-  state.companions.push({
-    name: document.getElementById("cName").value.trim(),
-    phone: document.getElementById("cPhone").value.trim(),
-    notes: document.getElementById("cNotes").value.trim()
+const cUl = document.getElementById("companionsList");
+cUl.innerHTML = "";
+if(!companions?.length){
+  cUl.innerHTML = `<li class="item muted">Aucune dame de compagnie ajoutée.</li>`;
+} else {
+  companions.forEach((c, i) => {
+    const li = document.createElement("li");
+    li.className = "item";
+    li.innerHTML = `
+      <div class="item-left">
+        <div>
+          <div class="item-title">${escapeHtml(c.name)}</div>
+          <div class="item-sub">${escapeHtml(c.notes || "Dame de compagnie")} ${c.phone ? "• " + escapeHtml(c.phone) : ""}</div>
+        </div>
+      </div>
+      <button class="mini-btn danger" data-del-c="${i}">Suppr</button>
+    `;
+    cUl.appendChild(li);
   });
-  saveState(state);
-  closeModal("companionModal");
-  e.target.reset();
-  render();
-});
-render();
-    go("home");
-    if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/Casamento-Keshya/sw.js");
-  }
+}
   </script>
 </body>
 </html>
+
 
 
 
