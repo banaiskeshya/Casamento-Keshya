@@ -1007,15 +1007,11 @@ companions: [
     function closeModal(id){ document.getElementById(id).classList.remove("open"); }
 
     document.addEventListener("click", (e) => {
-      const closeId = e.target?.dataset?.close;
-      if(closeId) closeModal(closeId);
-      if(e.target.classList.contains("modal")) e.target.classList.remove("open");
-    });
-    document.addEventListener("click", (e) => {
   const idx = e.target?.dataset?.delW;
   if(idx === undefined) return;
   const state = loadState();
-  Witnesses.splice(Number(idx), 1);
+  state.witnesses = state.witnesses || [];
+  state.witnesses.splice(Number(idx), 1);
   saveState(state);
   render();
 });
@@ -1024,7 +1020,8 @@ document.addEventListener("click", (e) => {
   const idx = e.target?.dataset?.delC;
   if(idx === undefined) return;
   const state = loadState();
-  Companions.splice(Number(idx), 1);
+  state.companions = state.companions || [];
+  state.companions.splice(Number(idx), 1);
   saveState(state);
   render();
 });
@@ -1326,11 +1323,6 @@ document.getElementById("openAddCompanion").addEventListener("click", ()=> openM
     });
 
     // Init
-    render();
-    go("home");
-    if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/Casamento-Keshya/sw.js");
-  }
     document.getElementById("witnessForm").addEventListener("submit", (e)=>{
   e.preventDefault();
   const state = loadState();
@@ -1360,10 +1352,15 @@ document.getElementById("companionForm").addEventListener("submit", (e)=>{
   e.target.reset();
   render();
 });
-
+render();
+    go("home");
+    if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/Casamento-Keshya/sw.js");
+  }
   </script>
 </body>
 </html>
+
 
 
 
