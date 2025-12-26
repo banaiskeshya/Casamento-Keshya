@@ -564,6 +564,15 @@ body::after{
                 <span class="mini-title">Demoiselles</span>
                 <span class="mini-value" id="bridesmaidsCount">0</span>
               </div>
+              <div class="mini">
+    <span class="mini-title">Témoins</span>
+    <span class="mini-value" id="witnessesCount">0</span>
+  </div>
+  <div class="mini">
+    <span class="mini-title">Dames</span>
+    <span class="mini-value" id="companionsCount">0</span>
+  </div>
+</div>
             </div>
           </div>
         </div>
@@ -659,6 +668,35 @@ body::after{
           </div>
 
           <div class="divider"></div>
+<div class="divider"></div>
+
+<label style="font-size:12px;font-weight:900;color:var(--navy);display:block;margin-bottom:6px;">
+  Rechercher
+</label>
+<input id="guestSearch" type="text" placeholder="Nom / téléphone..." />
+
+<div class="row mt-sm">
+  <select id="filterGroup" style="flex:1; min-width:140px;">
+    <option value="all">Tous les groupes</option>
+    <option value="Famille">Famille</option>
+    <option value="Amis">Amis</option>
+    <option value="Collègues">Collègues</option>
+    <option value="Invités">Invités</option>
+  </select>
+
+  <select id="filterRsvp" style="flex:1; min-width:140px;">
+    <option value="all">Tous les RSVP</option>
+    <option value="confirmed">Confirmés</option>
+    <option value="pending">En attente</option>
+    <option value="declined">Refus</option>
+  </select>
+</div>
+
+<div class="row mt-sm">
+  <button class="mini-btn" id="clearFilters" type="button">Effacer filtres</button>
+</div>
+
+<div class="divider"></div>
 
           <ul class="list" id="guestsList"></ul>
         </div>
@@ -745,6 +783,20 @@ body::after{
         </div>
 
         <button class="btn btn-primary btn-full" type="submit">Enregistrer</button>
+        <div class="divider"></div>
+
+<button class="btn btn-outline btn-full" id="exportData" type="button">⬇️ Exporter mes données</button>
+
+<label class="mt-sm">
+  Importer (coller le JSON)
+  <input type="text" id="importJson" placeholder='{"profile":...}' />
+</label>
+<button class="btn btn-primary btn-full" id="importData" type="button">⬆️ Importer</button>
+
+<button class="btn btn-outline btn-full" id="resetData" type="button" style="border-color:#ffd7d7;color:#b42318;">
+  🗑️ Réinitialiser l’app
+</button>
+
       </form>
     </div>
   </div>
@@ -1017,24 +1069,35 @@ body::after{
     }[m]));
   }
 
+  function getGuestFilters(){
+    const q = (document.getElementById("guestSearch")?.value || "").trim().toLowerCase();
+    const group = document.getElementById("filterGroup")?.value || "all";
+    const rsvp = document.getElementById("filterRsvp")?.value || "all";
+    return { q, group, rsvp };
+  }
+
   function render(){
     const state = loadState();
     const { profile, tasks, expenses, guests, bridesmaids, witnesses, companions } = state;
 
-    // Countdown
+    // Home counters
     document.getElementById("countdown").textContent = "J-" + daysUntil(profile.weddingDate);
 
-    // Progress tasks
     const done = tasks.filter(t => t.status === "done").length;
     const pct = tasks.length ? Math.round((done / tasks.length) * 100) : 0;
     document.getElementById("progressFill").style.width = pct + "%";
     document.getElementById("progressMeta").textContent = `${pct}% terminé • ${done}/${tasks.length} tâches`;
 
-    // Quick counts
     document.getElementById("guestsCount").textContent = guests.length;
     document.getElementById("bridesmaidsCount").textContent = bridesmaids.length;
 
-    // Budget calcs
+    // New counters (if elements exist)
+    const wCountEl = document.getElementById("witnessesCount");
+    const cCountEl = document.getElementById("companionsCount");
+    if(wCountEl) wCountEl.textContent = (witnesses || []).length;
+    if(cCountEl) cCountEl.textContent = (companions || []).length;
+
+    // Budget
     const totalSpent = expenses.reduce((s,e)=>s + Number(e.amount||0), 0);
     const remaining = Math.max(0, profile.budgetBase - totalSpent);
     const missingToTarget = Math.max(0, profile.targetAmount - profile.cashOnHand);
@@ -1044,13 +1107,11 @@ body::after{
       if(el) el.textContent = val;
     };
 
-    // Home stats
     setText("budgetBase", formatMoney(profile.budgetBase));
     setText("cashOnHand", formatMoney(profile.cashOnHand));
     setText("targetAmount", formatMoney(profile.targetAmount));
     setText("totalSpent", formatMoney(totalSpent));
 
-    // Budget page stats
     setText("b_budgetBase", formatMoney(profile.budgetBase));
     setText("b_cashOnHand", formatMoney(profile.cashOnHand));
     setText("b_targetAmount", formatMoney(profile.targetAmount));
@@ -1084,7 +1145,7 @@ body::after{
       }
     }
 
-    // Expenses list
+    // Expenses
     const expUl = document.getElementById("expensesList");
     if(expUl){
       expUl.innerHTML = "";
@@ -1112,18 +1173,29 @@ body::after{
     // Guests stats
     const confirmed = guests.filter(g => g.rsvp === "confirmed").length;
     const pending = guests.filter(g => g.rsvp === "pending").length;
+
     setText("g_total", guests.length);
     setText("g_confirmed", confirmed);
     setText("g_pending", pending);
 
-    // Guests list
+    // Guests list with filters
+    const { q, group, rsvp } = getGuestFilters();
+    const filteredGuests = guests.filter(g => {
+      const hay = `${g.name || ""} ${g.phone || ""}`.toLowerCase();
+      const okQ = !q || hay.includes(q);
+      const okGroup = (group === "all") || (g.group === group);
+      const okRsvp = (rsvp === "all") || (g.rsvp === rsvp);
+      return okQ && okGroup && okRsvp;
+    });
+
     const gUl = document.getElementById("guestsList");
     if(gUl){
       gUl.innerHTML = "";
-      if(!guests.length){
-        gUl.innerHTML = `<li class="item muted">Aucun invité.</li>`;
+      if(!filteredGuests.length){
+        gUl.innerHTML = `<li class="item muted">Aucun invité (avec ces filtres).</li>`;
       } else {
-        guests.forEach((g, i) => {
+        filteredGuests.forEach((g) => {
+          const idx = guests.indexOf(g); // index original for delete
           const li = document.createElement("li");
           li.className = "item";
           li.innerHTML = `
@@ -1133,14 +1205,14 @@ body::after{
                 <div class="item-sub">${escapeHtml(g.group)} • ${labelRsvp(g.rsvp)} ${g.phone ? "• " + escapeHtml(g.phone) : ""}</div>
               </div>
             </div>
-            <button class="mini-btn danger" data-del-guest="${i}">Suppr</button>
+            <button class="mini-btn danger" data-del-guest="${idx}">Suppr</button>
           `;
           gUl.appendChild(li);
         });
       }
     }
 
-    // Bridesmaids list
+    // Bridesmaids
     const bmUl = document.getElementById("bridesmaidsList");
     if(bmUl){
       bmUl.innerHTML = "";
@@ -1164,7 +1236,7 @@ body::after{
       }
     }
 
-    // Witnesses list
+    // Witnesses
     const wUl = document.getElementById("witnessesList");
     if(wUl){
       wUl.innerHTML = "";
@@ -1188,7 +1260,7 @@ body::after{
       }
     }
 
-    // Companions list
+    // Companions
     const cUl = document.getElementById("companionsList");
     if(cUl){
       cUl.innerHTML = "";
@@ -1212,12 +1284,13 @@ body::after{
       }
     }
 
-    // Settings form values
+    // Settings form
     const wd = document.getElementById("weddingDate");
     const bb = document.getElementById("budgetBaseInput");
     const ch = document.getElementById("cashOnHandInput");
     const ta = document.getElementById("targetAmountInput");
     const td = document.getElementById("targetDateInput");
+
     if(wd) wd.value = profile.weddingDate;
     if(bb) bb.value = profile.budgetBase;
     if(ch) ch.value = profile.cashOnHand;
@@ -1225,7 +1298,7 @@ body::after{
     if(td) td.value = profile.targetDate || "";
   }
 
-  // Navigation tabs
+  // Navigation
   document.querySelectorAll("[data-go]").forEach(btn=>{
     btn.addEventListener("click", ()=> go(btn.dataset.go));
   });
@@ -1238,11 +1311,25 @@ body::after{
   document.getElementById("openAddWitness")?.addEventListener("click", ()=> openModal("witnessModal"));
   document.getElementById("openAddCompanion")?.addEventListener("click", ()=> openModal("companionModal"));
 
-  // Close modals (X button + click outside sheet)
+  // Close modals
   document.addEventListener("click", (e) => {
     const closeId = e.target?.dataset?.close;
     if(closeId) closeModal(closeId);
     if(e.target.classList && e.target.classList.contains("modal")) e.target.classList.remove("open");
+  });
+
+  // Filters listeners
+  document.getElementById("guestSearch")?.addEventListener("input", render);
+  document.getElementById("filterGroup")?.addEventListener("change", render);
+  document.getElementById("filterRsvp")?.addEventListener("change", render);
+  document.getElementById("clearFilters")?.addEventListener("click", ()=>{
+    const s = document.getElementById("guestSearch");
+    const g = document.getElementById("filterGroup");
+    const r = document.getElementById("filterRsvp");
+    if(s) s.value = "";
+    if(g) g.value = "all";
+    if(r) r.value = "all";
+    render();
   });
 
   // Mark task done
@@ -1258,7 +1345,7 @@ body::after{
     }
   });
 
-  // Delete expense
+  // Delete actions
   document.addEventListener("click", (e) => {
     const idx = e.target?.dataset?.delExp;
     if(idx === undefined) return;
@@ -1268,7 +1355,6 @@ body::after{
     render();
   });
 
-  // Delete guest
   document.addEventListener("click", (e) => {
     const idx = e.target?.dataset?.delGuest;
     if(idx === undefined) return;
@@ -1278,7 +1364,6 @@ body::after{
     render();
   });
 
-  // Delete bridesmaid
   document.addEventListener("click", (e) => {
     const idx = e.target?.dataset?.delBm;
     if(idx === undefined) return;
@@ -1288,7 +1373,6 @@ body::after{
     render();
   });
 
-  // Delete witness
   document.addEventListener("click", (e) => {
     const idx = e.target?.dataset?.delW;
     if(idx === undefined) return;
@@ -1299,7 +1383,6 @@ body::after{
     render();
   });
 
-  // Delete companion
   document.addEventListener("click", (e) => {
     const idx = e.target?.dataset?.delC;
     if(idx === undefined) return;
@@ -1310,7 +1393,7 @@ body::after{
     render();
   });
 
-  // Settings submit
+  // Forms submit
   document.getElementById("settingsForm")?.addEventListener("submit", (e)=>{
     e.preventDefault();
     const state = loadState();
@@ -1324,7 +1407,6 @@ body::after{
     render();
   });
 
-  // Expense submit
   document.getElementById("expenseForm")?.addEventListener("submit", (e)=>{
     e.preventDefault();
     const state = loadState();
@@ -1342,7 +1424,6 @@ body::after{
     render();
   });
 
-  // Guest submit
   document.getElementById("guestForm")?.addEventListener("submit", (e)=>{
     e.preventDefault();
     const state = loadState();
@@ -1358,7 +1439,6 @@ body::after{
     render();
   });
 
-  // Bridesmaid submit
   document.getElementById("bridesmaidForm")?.addEventListener("submit", (e)=>{
     e.preventDefault();
     const state = loadState();
@@ -1374,7 +1454,6 @@ body::after{
     render();
   });
 
-  // Witness submit
   document.getElementById("witnessForm")?.addEventListener("submit", (e)=>{
     e.preventDefault();
     const state = loadState();
@@ -1390,7 +1469,6 @@ body::after{
     render();
   });
 
-  // Companion submit
   document.getElementById("companionForm")?.addEventListener("submit", (e)=>{
     e.preventDefault();
     const state = loadState();
@@ -1406,13 +1484,50 @@ body::after{
     render();
   });
 
+  // Export / Import / Reset
+  document.getElementById("exportData")?.addEventListener("click", ()=>{
+    const state = loadState();
+    const json = JSON.stringify(state, null, 2);
+    navigator.clipboard?.writeText(json);
+    alert("✅ Données copiées dans le presse-papier !\nTu peux les coller dans Notes/WhatsApp/Drive.");
+  });
+
+  document.getElementById("importData")?.addEventListener("click", ()=>{
+    const raw = document.getElementById("importJson")?.value?.trim();
+    if(!raw) return alert("Colle le JSON dans le champ d’import.");
+    try{
+      const parsed = JSON.parse(raw);
+
+      // petite validation
+      if(!parsed.profile || !parsed.guests || !parsed.expenses) {
+        return alert("❌ JSON invalide (structure incorrecte).");
+      }
+
+      localStorage.setItem(KEY, JSON.stringify(parsed));
+      alert("✅ Import OK !");
+      render();
+    }catch(err){
+      alert("❌ JSON invalide. Vérifie le format.");
+    }
+  });
+
+  document.getElementById("resetData")?.addEventListener("click", ()=>{
+    const ok = confirm("Réinitialiser toutes les données ? (Cette action est irréversible)");
+    if(!ok) return;
+    localStorage.removeItem(KEY);
+    alert("✅ Réinitialisé !");
+    render();
+  });
+
   // Init
   render();
   go("home");
 </script>
 
+
 </body>
 </html>
+
 
 
 
