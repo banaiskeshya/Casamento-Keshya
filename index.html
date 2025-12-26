@@ -1015,7 +1015,7 @@ companions: [
   const idx = e.target?.dataset?.delW;
   if(idx === undefined) return;
   const state = loadState();
-  state.witnesses.splice(Number(idx), 1);
+  Witnesses.splice(Number(idx), 1);
   saveState(state);
   render();
 });
@@ -1024,7 +1024,7 @@ document.addEventListener("click", (e) => {
   const idx = e.target?.dataset?.delC;
   if(idx === undefined) return;
   const state = loadState();
-  state.companions.splice(Number(idx), 1);
+  Companions.splice(Number(idx), 1);
   saveState(state);
   render();
 });
@@ -1044,7 +1044,7 @@ document.addEventListener("click", (e) => {
 
     function render(){
       const state = loadState();
-      const { profile, tasks, expenses, guests, bridesmaids } = state;
+      const { profile, tasks, expenses, guests, bridesmaids, witnesses, companions } = state;
 
       document.getElementById("countdown").textContent = "J-" + daysUntil(profile.weddingDate);
 
@@ -1364,6 +1364,7 @@ document.getElementById("companionForm").addEventListener("submit", (e)=>{
   </script>
 </body>
 </html>
+
 
 
 
