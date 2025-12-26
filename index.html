@@ -1,442 +1,532 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mon Mariage — Suivi</title>
-
-  <!-- PWA (DOIT être dans le <head>) -->
+  
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#0F172A">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --ivory:#F8FAFC;
-      --ivory-2:#F1F5F9;
-      --navy:#0F172A;
-      --gold:#C8A96A;
-      --gold-2:#B99656;
-      --text:#111827;
-      --muted:#64748B;
-      --line:#E5E7EB;
+ <style>
+  :root{
+    /* Palette chic minimaliste */
+    --ivory:#F8FAFC;
+    --ivory-2:#F1F5F9;
+    --navy:#0F172A;
+    --gold:#C8A96A;
+    --gold-2:#B99656;
+    --text:#111827;
+    --muted:#64748B;
+    --line:#E5E7EB;
 
-      --shadow-1: 0 10px 30px rgba(15,23,42,.06);
-      --shadow-2: 0 18px 45px rgba(15,23,42,.10);
-      --radius: 18px;
-      --radius-lg: 22px;
-    }
+    /* Effets premium */
+    --shadow-1: 0 10px 30px rgba(15,23,42,.06);
+    --shadow-2: 0 18px 45px rgba(15,23,42,.10);
+    --radius: 18px;
+    --radius-lg: 22px;
+  }
 
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+  font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  color: var(--text);
 
-    body{
-      font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      color: var(--text);
+  /* BACKGROUND PÉTILLANT PREMIUM */
+  background:
+    /* Rose poudré lumineux (émotion / mariage) */
+    radial-gradient(
+      700px 500px at 15% -10%,
+      rgba(255,183,197,.45),
+      rgba(255,183,197,0) 65%
+    ),
 
-      background:
-        radial-gradient(700px 500px at 15% -10%, rgba(255,183,197,.45), rgba(255,183,197,0) 65%),
-        radial-gradient(650px 450px at 85% 5%, rgba(200,169,106,.50), rgba(200,169,106,0) 70%),
-        radial-gradient(800px 550px at 50% 35%, rgba(147,197,253,.35), rgba(147,197,253,0) 65%),
-        radial-gradient(600px 400px at 90% 60%, rgba(196,181,253,.30), rgba(196,181,253,0) 65%),
-        linear-gradient(180deg, #FFF1F5 0%, #FDF4FF 35%, #F0F9FF 65%, #ECFEFF 100%);
-    }
-    body::after{
-      content:"";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image: radial-gradient(rgba(255,255,255,.25) 1px, transparent 1px);
-      background-size: 22px 22px;
-      opacity: .35;
-    }
+    /* Or lumineux (prestige / célébration) */
+    radial-gradient(
+      650px 450px at 85% 5%,
+      rgba(200,169,106,.50),
+      rgba(200,169,106,0) 70%
+    ),
 
-    .card,.hero-card{
-      background: rgba(255,255,255,.82);
-      backdrop-filter: blur(14px);
-    }
-    .section-title{
-      background: linear-gradient(90deg, #0F172A, #C8A96A);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin: 18px 0 10px;
-      font-size: 14px;
-      font-weight: 900;
-    }
+    /* Bleu ciel doux (fraîcheur / joie) */
+    radial-gradient(
+      800px 550px at 50% 35%,
+      rgba(147,197,253,.35),
+      rgba(147,197,253,0) 65%
+    ),
 
-    .app{
-      max-width: 430px;
-      margin: 0 auto;
-      min-height: 100vh;
-      padding-bottom: 92px;
-    }
+    /* Violet très léger (romance moderne) */
+    radial-gradient(
+      600px 400px at 90% 60%,
+      rgba(196,181,253,.30),
+      rgba(196,181,253,0) 65%
+    ),
 
-    .topbar{
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      padding: 16px 16px 12px;
-      background: rgba(248,250,252,.82);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(229,231,235,.8);
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 12px;
-    }
-    .topbar h1{
-      font-size: 22px;
-      font-weight: 900;
-      color: var(--navy);
-      letter-spacing: -0.4px;
-      line-height: 1.1;
-    }
-    .sub{
-      margin-top: 4px;
-      font-size: 12px;
-      color: var(--muted);
-    }
+    /* Dégradé de base coloré */
+    linear-gradient(
+      180deg,
+      #FFF1F5 0%,
+      #FDF4FF 35%,
+      #F0F9FF 65%,
+      #ECFEFF 100%
+    );
+}
+body::after{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(rgba(255,255,255,.25) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: .35;
+}
+.card,
+.hero-card{
+  background: rgba(255,255,255,.82);
+  backdrop-filter: blur(14px);
+}
+.section-title{
+  background: linear-gradient(90deg, #0F172A, #C8A96A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-    .icon-btn{
-      border: 1px solid rgba(229,231,235,.9);
-      background: rgba(255,255,255,.85);
-      border-radius: 14px;
-      padding: 10px 12px;
-      cursor:pointer;
-      box-shadow: var(--shadow-1);
-      transition: transform .12s ease, box-shadow .12s ease;
-    }
-    .icon-btn:active{transform: scale(.98)}
-    .icon-btn:hover{box-shadow: var(--shadow-2)}
 
-    .pages{padding: 14px 16px 20px}
-    .page{display:none; animation: fadeUp .18s ease}
-    .page.active{display:block}
-    @keyframes fadeUp{
-      from{opacity:.0; transform: translateY(6px)}
-      to{opacity:1; transform: translateY(0)}
-    }
 
-    h2{
-      font-size: 18px;
-      color: var(--navy);
-      font-weight: 900;
-      letter-spacing: -0.2px;
-      margin: 0 0 10px;
-    }
+  /* App container */
+  .app{
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-bottom: 92px; /* bottom nav */
+  }
 
-    .card{
-      border: 1px solid rgba(229,231,235,.9);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-1);
-      padding: 14px;
-    }
+  /* Topbar */
+  .topbar{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 16px 16px 12px;
+    background: rgba(248,250,252,.82);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229,231,235,.8);
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap: 12px;
+  }
+  .topbar h1{
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: -0.4px;
+    line-height: 1.1;
+  }
+  .sub{
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--muted);
+  }
 
-    .hero-card{
-      position: relative;
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      border: 1px solid rgba(229,231,235,.9);
-      box-shadow: var(--shadow-2);
-      overflow: hidden;
-      display:flex;
-      justify-content:space-between;
-      gap: 12px;
-      background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(255,255,255,.80));
-    }
-    .hero-card::before{
-      content:"";
-      position:absolute;
-      width: 180px;
-      height: 180px;
-      right: -70px;
-      top: -70px;
-      background: radial-gradient(circle, rgba(200,169,106,.35), rgba(200,169,106,0) 70%);
-      filter: blur(2px);
-    }
-    .hero-card::after{
-      content:"";
-      position:absolute;
-      width: 220px;
-      height: 220px;
-      left: -90px;
-      bottom: -110px;
-      background: radial-gradient(circle, rgba(15,23,42,.14), rgba(15,23,42,0) 65%);
-      filter: blur(1px);
-    }
+  .icon-btn{
+    border: 1px solid rgba(229,231,235,.9);
+    background: rgba(255,255,255,.85);
+    border-radius: 14px;
+    padding: 10px 12px;
+    cursor:pointer;
+    box-shadow: var(--shadow-1);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .icon-btn:active{transform: scale(.98)}
+  .icon-btn:hover{box-shadow: var(--shadow-2)}
 
-    .label{font-size:12px;color:var(--muted)}
-    .big{
-      font-size: 40px;
-      font-weight: 950;
-      color: var(--navy);
-      letter-spacing: -1px;
-      margin: 6px 0 10px;
-      position: relative;
-      z-index: 1;
-    }
+  /* Pages */
+  .pages{padding: 14px 16px 20px}
+  .page{display:none; animation: fadeUp .18s ease}
+  .page.active{display:block}
+  @keyframes fadeUp{
+    from{opacity:.0; transform: translateY(6px)}
+    to{opacity:1; transform: translateY(0)}
+  }
 
-    .progress-wrap{margin-top:4px; position: relative; z-index: 1;}
-    .progress-bar{
-      width:100%;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(241,245,249,.9);
-      border: 1px solid rgba(229,231,235,.9);
-      overflow:hidden;
-    }
-    .progress-fill{
-      height:100%;
-      width:0%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--gold), var(--gold-2));
-      box-shadow: 0 6px 14px rgba(200,169,106,.30);
-      transition: width .35s ease;
-    }
-    .progress-meta{margin-top: 8px;font-size: 12px;color: var(--muted);}
+  /* Titles */
+  h2{
+    font-size: 18px;
+    color: var(--navy);
+    font-weight: 900;
+    letter-spacing: -0.2px;
+    margin: 0 0 10px;
+  }
+  .section-title{
+    margin: 18px 0 10px;
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--navy);
+  }
 
-    .hero-right{
-      display:flex;
-      flex-direction:column;
-      align-items:flex-end;
-      gap: 10px;
-      position: relative;
-      z-index: 1;
-    }
-    .chip{
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .1px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(229,231,235,.9);
-      background: rgba(255,255,255,.80);
-      box-shadow: 0 10px 20px rgba(15,23,42,.06);
-    }
+  /* Card base */
+  .card{
+    background: rgba(255,255,255,.92);
+    border: 1px solid rgba(229,231,235,.9);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-1);
+    padding: 14px;
+  }
 
-    .mini-stats{display:flex;gap:10px}
-    .mini{
-      background: rgba(255,255,255,.86);
-      border: 1px solid rgba(229,231,235,.9);
-      border-radius: 16px;
-      padding: 10px 12px;
-      min-width: 110px;
-      text-align:right;
-      box-shadow: 0 10px 22px rgba(15,23,42,.06);
-    }
-    .mini-title{display:block;color:var(--muted);font-size:11px}
-    .mini-value{
-      display:block;
-      font-weight: 950;
-      color: var(--navy);
-      font-size: 18px;
-      letter-spacing: -0.3px;
-    }
+  /* Hero / Countdown card */
+  .hero-card{
+    position: relative;
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    border: 1px solid rgba(229,231,235,.9);
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.95), rgba(255,255,255,.80));
+    box-shadow: var(--shadow-2);
+    overflow: hidden;
+    display:flex;
+    justify-content:space-between;
+    gap: 12px;
+  }
+  /* subtle decorative blur */
+  .hero-card::before{
+    content:"";
+    position:absolute;
+    width: 180px;
+    height: 180px;
+    right: -70px;
+    top: -70px;
+    background: radial-gradient(circle, rgba(200,169,106,.35), rgba(200,169,106,0) 70%);
+    filter: blur(2px);
+  }
+  .hero-card::after{
+    content:"";
+    position:absolute;
+    width: 220px;
+    height: 220px;
+    left: -90px;
+    bottom: -110px;
+    background: radial-gradient(circle, rgba(15,23,42,.14), rgba(15,23,42,0) 65%);
+    filter: blur(1px);
+  }
 
-    .grid-2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+  .label{font-size:12px;color:var(--muted)}
+  .big{
+    font-size: 40px;
+    font-weight: 950;
+    color: var(--navy);
+    letter-spacing: -1px;
+    margin: 6px 0 10px;
+    position: relative;
+    z-index: 1;
+  }
 
-    .stat{padding: 14px;border-radius: 18px;}
-    .stat .value{
-      margin-top: 6px;
-      font-size: 15px;
-      font-weight: 950;
-      color: var(--navy);
-      letter-spacing: -0.2px;
-    }
+  /* Progress */
+  .progress-wrap{margin-top:4px; position: relative; z-index: 1;}
+  .progress-bar{
+    width:100%;
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(241,245,249,.9);
+    border: 1px solid rgba(229,231,235,.9);
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-2));
+    box-shadow: 0 6px 14px rgba(200,169,106,.30);
+    transition: width .35s ease;
+  }
+  .progress-meta{
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
 
-    .btn{
-      border-radius: 999px;
-      padding: 10px 14px;
-      border: 1px solid transparent;
-      font-weight: 850;
-      cursor:pointer;
-      font-size: 13px;
-      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
-    }
-    .btn:active{transform: scale(.99)}
-    .btn-primary{
-      background: linear-gradient(135deg, var(--gold), var(--gold-2));
-      color: #121212;
-      box-shadow: 0 14px 30px rgba(200,169,106,.26);
-    }
-    .btn-outline{
-      background: rgba(255,255,255,.92);
-      border-color: rgba(229,231,235,.95);
-      color: var(--navy);
-      box-shadow: 0 10px 20px rgba(15,23,42,.06);
-    }
-    .btn-full{width:100%}
+  .hero-right{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+  }
 
-    .list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:6px}
-    .item{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      padding: 12px 12px;
-      border: 1px solid rgba(229,231,235,.9);
-      border-radius: 16px;
-      background: rgba(255,255,255,.95);
-      transition: transform .12s ease, box-shadow .12s ease;
-    }
-    .item:hover{box-shadow: 0 14px 30px rgba(15,23,42,.08);transform: translateY(-1px);}
-    .item-left{display:flex;align-items:flex-start;gap:10px}
-    .item-title{font-weight:950;color:var(--navy);font-size:13px;letter-spacing:-0.15px}
-    .item-sub{color:var(--muted);font-size:11px;margin-top:2px}
+  .chip{
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .1px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(229,231,235,.9);
+    background: rgba(255,255,255,.80);
+    box-shadow: 0 10px 20px rgba(15,23,42,.06);
+  }
 
-    .dot{
-      width: 10px;height: 10px;border-radius: 999px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-2));
-      margin-top: 5px;
-      box-shadow: 0 10px 18px rgba(200,169,106,.25);
-    }
-    .badge{
-      font-size: 11px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(229,231,235,.9);
-      background: rgba(255,255,255,.9);
-      color: var(--navy);
-      font-weight: 900;
-      box-shadow: 0 10px 20px rgba(15,23,42,.06);
-    }
-    .mini-btn{
-      border-radius: 999px;
-      border: 1px solid rgba(229,231,235,.95);
-      background: rgba(255,255,255,.92);
-      padding: 8px 12px;
-      cursor:pointer;
-      font-weight: 900;
-      font-size: 12px;
-      color: var(--navy);
-      white-space: nowrap;
-      box-shadow: 0 10px 18px rgba(15,23,42,.06);
-      transition: transform .12s ease, box-shadow .12s ease;
-    }
-    .mini-btn:active{transform: scale(.98)}
-    .mini-btn.danger{
-      color:#b42318;
-      border-color:#ffd7d7;
-      background:#fff6f6;
-      box-shadow: 0 12px 22px rgba(180,35,24,.10);
-    }
+  .mini-stats{display:flex;gap:10px}
+  .mini{
+    background: rgba(255,255,255,.86);
+    border: 1px solid rgba(229,231,235,.9);
+    border-radius: 16px;
+    padding: 10px 12px;
+    min-width: 110px;
+    text-align:right;
+    box-shadow: 0 10px 22px rgba(15,23,42,.06);
+  }
+  .mini-title{display:block;color:var(--muted);font-size:11px}
+  .mini-value{
+    display:block;
+    font-weight: 950;
+    color: var(--navy);
+    font-size: 18px;
+    letter-spacing: -0.3px;
+  }
 
-    .muted{color:var(--muted);font-size:13px}
-    .mt{margin-top:12px}
-    .mt-sm{margin-top:8px}
-    .row{display:flex;gap:8px;flex-wrap:wrap}
-    .pill{
-      border: 1px solid rgba(229,231,235,.9);
-      background: rgba(255,255,255,.92);
-      border-radius: 999px;
-      padding: 8px 10px;
-      font-size: 12px;
-      color: var(--navy);
-      box-shadow: 0 10px 20px rgba(15,23,42,.06);
-    }
-    .divider{height:1px;background:rgba(229,231,235,.9);margin:12px 0}
+  /* Grid */
+  .grid-2{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
 
-    .bottom-nav{
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 10px;
-      width: min(430px, calc(100% - 24px));
-      display:flex;
-      gap: 8px;
-      justify-content:space-between;
-      padding: 10px;
-      background: rgba(255,255,255,.86);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(229,231,235,.9);
-      border-radius: 22px;
-      box-shadow: 0 18px 45px rgba(15,23,42,.14);
-    }
-    .tab{
-      flex:1;
-      border: 1px solid rgba(229,231,235,.85);
-      background: rgba(255,255,255,.92);
-      border-radius: 16px;
-      padding: 10px 6px;
-      cursor:pointer;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap: 4px;
-      font-size: 14px;
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-    }
-    .tab span{font-size:10px;font-weight:900;color:var(--muted)}
-    .tab.active{
-      border-color: rgba(200,169,106,.70);
-      box-shadow: 0 16px 34px rgba(200,169,106,.22);
-      background: linear-gradient(135deg, rgba(200,169,106,.18), rgba(255,255,255,.92));
-    }
-    .tab.active span{color: var(--navy)}
+  /* Stat cards */
+  .stat{
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.92);
+  }
+  .stat .value{
+    margin-top: 6px;
+    font-size: 15px;
+    font-weight: 950;
+    color: var(--navy);
+    letter-spacing: -0.2px;
+  }
 
-    .modal{
-      position: fixed; inset: 0;
-      background: rgba(15,23,42,.52);
-      display:none;
-      align-items:flex-end;
-      justify-content:center;
-      padding: 14px;
-      z-index: 50;
-    }
-    .modal.open{display:flex}
-    .sheet{
-      width: min(430px, 100%);
-      background: rgba(255,255,255,.94);
-      border-radius: 24px;
-      border: 1px solid rgba(229,231,235,.9);
-      box-shadow: 0 22px 60px rgba(15,23,42,.22);
-      overflow:hidden;
-    }
-    .sheet-head{
-      padding: 14px 14px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      border-bottom: 1px solid rgba(229,231,235,.9);
-      background: rgba(248,250,252,.80);
-    }
-    .sheet-head h3{font-size:14px;font-weight:950;color:var(--navy)}
-    .form{padding: 14px; display:flex; flex-direction:column; gap: 10px}
-    label{
-      font-size:12px; color:var(--navy); font-weight:900;
-      display:flex; flex-direction:column; gap:6px
-    }
-    input, select{
-      width: 100%;
-      border-radius: 16px;
-      border: 1px solid rgba(229,231,235,.95);
-      padding: 12px 12px;
-      font: inherit;
-      font-size: 13px;
-      outline: none;
-      background: rgba(255,255,255,.95);
-      box-shadow: 0 10px 20px rgba(15,23,42,.05);
-      transition: border-color .12s ease, box-shadow .12s ease;
-    }
-    .row-inline{flex-direction:row;align-items:center;gap:10px;font-weight:800;color:var(--muted)}
-    .row-inline input{width:auto}
+  /* Buttons */
+  .btn{
+    border-radius: 999px;
+    padding: 10px 14px;
+    border: 1px solid transparent;
+    font-weight: 850;
+    cursor:pointer;
+    font-size: 13px;
+    transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+  }
+  .btn:active{transform: scale(.99)}
+  .btn-primary{
+    background: linear-gradient(135deg, var(--gold), var(--gold-2));
+    color: #121212;
+    box-shadow: 0 14px 30px rgba(200,169,106,.26);
+  }
+  .btn-primary:hover{filter: brightness(1.02)}
+  .btn-outline{
+    background: rgba(255,255,255,.92);
+    border-color: rgba(229,231,235,.95);
+    color: var(--navy);
+    box-shadow: 0 10px 20px rgba(15,23,42,.06);
+  }
+  .btn-full{width:100%}
 
-    .page-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+  /* Lists */
+  .list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:6px}
+  .item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 12px;
+    padding: 12px 12px;
+    border: 1px solid rgba(229,231,235,.9);
+    border-radius: 16px;
+    background: rgba(255,255,255,.95);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .item:hover{
+    box-shadow: 0 14px 30px rgba(15,23,42,.08);
+    transform: translateY(-1px);
+  }
 
-    @media (max-width: 360px){
-      .grid-2{grid-template-columns: 1fr}
-      .mini-stats{flex-direction:column; align-items:stretch}
-      .mini{text-align:left; min-width:auto}
-    }
-  </style>
+  .item-left{display:flex;align-items:flex-start;gap:10px}
+  .item-title{font-weight:950;color:var(--navy);font-size:13px;letter-spacing:-0.15px}
+  .item-sub{color:var(--muted);font-size:11px;margin-top:2px}
+
+  .dot{
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-2));
+    margin-top: 5px;
+    box-shadow: 0 10px 18px rgba(200,169,106,.25);
+  }
+
+  .badge{
+    font-size: 11px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(229,231,235,.9);
+    background: rgba(255,255,255,.9);
+    color: var(--navy);
+    font-weight: 900;
+    box-shadow: 0 10px 20px rgba(15,23,42,.06);
+  }
+
+  .mini-btn{
+    border-radius: 999px;
+    border: 1px solid rgba(229,231,235,.95);
+    background: rgba(255,255,255,.92);
+    padding: 8px 12px;
+    cursor:pointer;
+    font-weight: 900;
+    font-size: 12px;
+    color: var(--navy);
+    white-space: nowrap;
+    box-shadow: 0 10px 18px rgba(15,23,42,.06);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .mini-btn:hover{box-shadow: 0 16px 30px rgba(15,23,42,.10)}
+  .mini-btn:active{transform: scale(.98)}
+  .mini-btn.danger{
+    color:#b42318;
+    border-color:#ffd7d7;
+    background:#fff6f6;
+    box-shadow: 0 12px 22px rgba(180,35,24,.10);
+  }
+
+  /* Pills & dividers */
+  .muted{color:var(--muted);font-size:13px}
+  .mt{margin-top:12px}
+  .mt-sm{margin-top:8px}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{
+    border: 1px solid rgba(229,231,235,.9);
+    background: rgba(255,255,255,.92);
+    border-radius: 999px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--navy);
+    box-shadow: 0 10px 20px rgba(15,23,42,.06);
+  }
+  .divider{height:1px;background:rgba(229,231,235,.9);margin:12px 0}
+
+  /* Bottom nav (floating premium) */
+  .bottom-nav{
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+    width: min(430px, calc(100% - 24px));
+    display:flex;
+    gap: 8px;
+    justify-content:space-between;
+    padding: 10px;
+    background: rgba(255,255,255,.86);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(229,231,235,.9);
+    border-radius: 22px;
+    box-shadow: 0 18px 45px rgba(15,23,42,.14);
+  }
+
+  .tab{
+    flex:1;
+    border: 1px solid rgba(229,231,235,.85);
+    background: rgba(255,255,255,.92);
+    border-radius: 16px;
+    padding: 10px 6px;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap: 4px;
+    font-size: 14px;
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  }
+  .tab span{font-size:10px;font-weight:900;color:var(--muted)}
+  .tab:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 12px 26px rgba(15,23,42,.10);
+  }
+  .tab.active{
+    border-color: rgba(200,169,106,.70);
+    box-shadow: 0 16px 34px rgba(200,169,106,.22);
+    background: linear-gradient(135deg, rgba(200,169,106,.18), rgba(255,255,255,.92));
+  }
+  .tab.active span{color: var(--navy)}
+
+  /* Modals / sheet (more premium) */
+  .modal{
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,.52);
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+    padding: 14px;
+    z-index: 50;
+  }
+  .modal.open{display:flex}
+
+  .sheet{
+    width: min(430px, 100%);
+    background: rgba(255,255,255,.94);
+    border-radius: 24px;
+    border: 1px solid rgba(229,231,235,.9);
+    box-shadow: 0 22px 60px rgba(15,23,42,.22);
+    overflow:hidden;
+  }
+  .sheet-head{
+    padding: 14px 14px 12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom: 1px solid rgba(229,231,235,.9);
+    background: rgba(248,250,252,.80);
+  }
+  .sheet-head h3{font-size:14px;font-weight:950;color:var(--navy)}
+
+  .form{padding: 14px; display:flex; flex-direction:column; gap: 10px}
+  label{
+    font-size:12px;
+    color:var(--navy);
+    font-weight:900;
+    display:flex;
+    flex-direction:column;
+    gap:6px
+  }
+  input, select{
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid rgba(229,231,235,.95);
+    padding: 12px 12px;
+    font: inherit;
+    font-size: 13px;
+    outline: none;
+    background: rgba(255,255,255,.95);
+    box-shadow: 0 10px 20px rgba(15,23,42,.05);
+    transition: border-color .12s ease, box-shadow .12s ease;
+  }
+  input:focus, select:focus{
+    border-color: rgba(200,169,106,.80);
+    box-shadow: 0 0 0 4px rgba(200,169,106,.18), 0 10px 20px rgba(15,23,42,.06);
+  }
+  .row-inline{flex-direction:row;align-items:center;gap:10px;font-weight:800;color:var(--muted)}
+  .row-inline input{width:auto}
+
+  /* Mobile small devices */
+  @media (max-width: 360px){
+    .grid-2{grid-template-columns: 1fr}
+    .mini-stats{flex-direction:column; align-items:stretch}
+    .mini{text-align:left; min-width:auto}
+  }
+</style>
+
 </head>
 
 <body>
@@ -480,10 +570,22 @@
 
         <h2 class="section-title">Résumé finances</h2>
         <div class="grid-2">
-          <div class="card stat"><p class="label">Montant de base</p><p class="value" id="budgetBase">—</p></div>
-          <div class="card stat"><p class="label">En caisse</p><p class="value" id="cashOnHand">—</p></div>
-          <div class="card stat"><p class="label">Ce que je dois avoir</p><p class="value" id="targetAmount">—</p></div>
-          <div class="card stat"><p class="label">Total dépensé</p><p class="value" id="totalSpent">—</p></div>
+          <div class="card stat">
+            <p class="label">Montant de base</p>
+            <p class="value" id="budgetBase">—</p>
+          </div>
+          <div class="card stat">
+            <p class="label">En caisse</p>
+            <p class="value" id="cashOnHand">—</p>
+          </div>
+          <div class="card stat">
+            <p class="label">Ce que je dois avoir</p>
+            <p class="value" id="targetAmount">—</p>
+          </div>
+          <div class="card stat">
+            <p class="label">Total dépensé</p>
+            <p class="value" id="totalSpent">—</p>
+          </div>
         </div>
 
         <h2 class="section-title">À faire prochainement</h2>
@@ -492,11 +594,13 @@
         </div>
       </section>
 
-      <!-- Checklist -->
+      <!-- Checklist (placeholder) -->
       <section class="page" id="page-checklist" aria-label="Checklist">
         <h2>Checklist</h2>
         <div class="card">
-          <p class="muted">(Prochaine étape) Ici on mettra toutes les tâches par catégories + dates + statuts.</p>
+          <p class="muted">
+            (Prochaine étape) Ici on mettra toutes les tâches par catégories + dates + statuts.
+          </p>
         </div>
       </section>
 
@@ -508,12 +612,30 @@
         </div>
 
         <div class="grid-2">
-          <div class="card stat"><p class="label">Montant de base</p><p class="value" id="b_budgetBase">—</p></div>
-          <div class="card stat"><p class="label">Ce que j’ai en caisse</p><p class="value" id="b_cashOnHand">—</p></div>
-          <div class="card stat"><p class="label">Ce que je dois avoir</p><p class="value" id="b_targetAmount">—</p></div>
-          <div class="card stat"><p class="label">Total dépensé</p><p class="value" id="b_totalSpent">—</p></div>
-          <div class="card stat"><p class="label">Reste sur budget</p><p class="value" id="b_remaining">—</p></div>
-          <div class="card stat"><p class="label">Manque à atteindre</p><p class="value" id="b_missingToTarget">—</p></div>
+          <div class="card stat">
+            <p class="label">Montant de base</p>
+            <p class="value" id="b_budgetBase">—</p>
+          </div>
+          <div class="card stat">
+            <p class="label">Ce que j’ai en caisse</p>
+            <p class="value" id="b_cashOnHand">—</p>
+          </div>
+          <div class="card stat">
+            <p class="label">Ce que je dois avoir</p>
+            <p class="value" id="b_targetAmount">—</p>
+          </div>
+          <div class="card stat">
+            <p class="label">Total dépensé</p>
+            <p class="value" id="b_totalSpent">—</p>
+          </div>
+          <div class="card stat">
+            <p class="label">Reste sur budget</p>
+            <p class="value" id="b_remaining">—</p>
+          </div>
+          <div class="card stat">
+            <p class="label">Manque à atteindre</p>
+            <p class="value" id="b_missingToTarget">—</p>
+          </div>
         </div>
 
         <h2 class="section-title">Dépenses</h2>
@@ -537,39 +659,25 @@
           </div>
 
           <div class="divider"></div>
+
           <ul class="list" id="guestsList"></ul>
         </div>
 
-        <!-- Demoiselles d’honneur -->
         <div class="card mt">
           <h3 style="font-size:14px;font-weight:900;color:var(--navy);">Demoiselles d’honneur</h3>
           <p class="muted">Ajoute ici les demoiselles d’honneur (elles comptent aussi dans les invités).</p>
           <button class="btn btn-outline" id="openAddBridesmaid">+ Demoiselle d’honneur</button>
           <ul class="list mt-sm" id="bridesmaidsList"></ul>
         </div>
-
-        <!-- Témoins -->
-        <div class="card mt">
-          <h3 style="font-size:14px;font-weight:950;color:var(--navy);">Témoins</h3>
-          <p class="muted">Ajoute tes témoins (ils comptent aussi dans les invités).</p>
-          <button class="btn btn-outline" id="openAddWitness">+ Témoin</button>
-          <ul class="list mt-sm" id="witnessesList"></ul>
-        </div>
-
-        <!-- Dame(s) de compagnie -->
-        <div class="card mt">
-          <h3 style="font-size:14px;font-weight:950;color:var(--navy);">Dame(s) de compagnie</h3>
-          <p class="muted">Ajoute ta/tes dame(s) de compagnie.</p>
-          <button class="btn btn-outline" id="openAddCompanion">+ Dame de compagnie</button>
-          <ul class="list mt-sm" id="companionsList"></ul>
-        </div>
       </section>
 
-      <!-- Inspirations -->
+      <!-- Inspirations (placeholder) -->
       <section class="page" id="page-inspi" aria-label="Inspirations">
         <h2>Inspirations</h2>
         <div class="card">
-          <p class="muted">(Prochaine étape) Moodboard : robe, faire-part, alliances, déco…</p>
+          <p class="muted">
+            (Prochaine étape) Moodboard : robe, faire-part, alliances, déco…
+          </p>
         </div>
       </section>
     </main>
@@ -592,16 +700,31 @@
       </div>
 
       <form id="settingsForm" class="form">
-        <label>Date du mariage<input type="date" id="weddingDate" required /></label>
+        <label>
+          Date du mariage
+          <input type="date" id="weddingDate" required />
+        </label>
 
         <div class="grid-2">
-          <label>Montant de base (FCFA)<input type="number" id="budgetBaseInput" min="0" step="1" required /></label>
-          <label>En caisse (FCFA)<input type="number" id="cashOnHandInput" min="0" step="1" required /></label>
+          <label>
+            Montant de base (FCFA)
+            <input type="number" id="budgetBaseInput" min="0" step="1" required />
+          </label>
+          <label>
+            En caisse (FCFA)
+            <input type="number" id="cashOnHandInput" min="0" step="1" required />
+          </label>
         </div>
 
         <div class="grid-2">
-          <label>Objectif à atteindre (FCFA)<input type="number" id="targetAmountInput" min="0" step="1" required /></label>
-          <label>Date objectif (option)<input type="date" id="targetDateInput" /></label>
+          <label>
+            Objectif à atteindre (FCFA)
+            <input type="number" id="targetAmountInput" min="0" step="1" required />
+          </label>
+          <label>
+            Date objectif (option)
+            <input type="date" id="targetDateInput" />
+          </label>
         </div>
 
         <button class="btn btn-primary btn-full" type="submit">Enregistrer</button>
@@ -618,9 +741,13 @@
       </div>
 
       <form id="expenseForm" class="form">
-        <label>Montant (FCFA)<input type="number" id="expenseAmount" min="0" step="1" required /></label>
+        <label>
+          Montant (FCFA)
+          <input type="number" id="expenseAmount" min="0" step="1" required />
+        </label>
 
-        <label>Catégorie
+        <label>
+          Catégorie
           <select id="expenseCategory" required>
             <option value="Salle">Salle</option>
             <option value="Traiteur">Traiteur</option>
@@ -633,7 +760,10 @@
           </select>
         </label>
 
-        <label>Note (option)<input type="text" id="expenseNote" placeholder="ex: acompte salle" /></label>
+        <label>
+          Note (option)
+          <input type="text" id="expenseNote" placeholder="ex: acompte salle" />
+        </label>
 
         <label class="row-inline">
           <input type="checkbox" id="expensePaid" checked />
@@ -654,11 +784,19 @@
       </div>
 
       <form id="guestForm" class="form">
-        <label>Nom<input type="text" id="guestName" required /></label>
-        <label>Téléphone (option)<input type="tel" id="guestPhone" placeholder="+241..." /></label>
+        <label>
+          Nom
+          <input type="text" id="guestName" required />
+        </label>
+
+        <label>
+          Téléphone (option)
+          <input type="tel" id="guestPhone" placeholder="+241..." />
+        </label>
 
         <div class="grid-2">
-          <label>Groupe
+          <label>
+            Groupe
             <select id="guestGroup">
               <option value="Famille">Famille</option>
               <option value="Amis">Amis</option>
@@ -667,7 +805,8 @@
             </select>
           </label>
 
-          <label>RSVP
+          <label>
+            RSVP
             <select id="guestRsvp">
               <option value="pending">En attente</option>
               <option value="confirmed">Confirmé</option>
@@ -681,6 +820,74 @@
     </div>
   </div>
 
+  <!-- MODAL: Ajouter témoin -->
+<div class="modal" id="witnessModal" role="dialog" aria-modal="true" aria-label="Ajouter un témoin">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h3>Ajouter un témoin</h3>
+      <button class="icon-btn" data-close="witnessModal">✕</button>
+    </div>
+
+    <form id="witnessForm" class="form">
+      <label>
+        Nom
+        <input type="text" id="wName" required />
+      </label>
+      <label>
+        Téléphone (option)
+        <input type="tel" id="wPhone" placeholder="+241..." />
+      </label>
+      <label>
+        Notes (option)
+        <input type="text" id="wNotes" placeholder="rôle, tenue, etc." />
+      </label>
+      <button class="btn btn-primary btn-full" type="submit">Ajouter</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: Ajouter dame de compagnie -->
+<div class="modal" id="companionModal" role="dialog" aria-modal="true" aria-label="Ajouter une dame de compagnie">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h3>Ajouter une dame de compagnie</h3>
+      <button class="icon-btn" data-close="companionModal">✕</button>
+    </div>
+
+    <form id="companionForm" class="form">
+      <label>
+        Nom
+        <input type="text" id="cName" required />
+      </label>
+      <label>
+        Téléphone (option)
+        <input type="tel" id="cPhone" placeholder="+241..." />
+      </label>
+      <label>
+        Notes (option)
+        <input type="text" id="cNotes" placeholder="rôle, tenue, etc." />
+      </label>
+      <button class="btn btn-primary btn-full" type="submit">Ajouter</button>
+    </form>
+  </div>
+</div>
+
+ <!-- Témoins -->
+<div class="card mt">
+  <h3 style="font-size:14px;font-weight:950;color:var(--navy);">Témoins</h3>
+  <p class="muted">Ajoute tes témoins (ils comptent aussi dans les invités).</p>
+  <button class="btn btn-outline" id="openAddWitness">+ Témoin</button>
+  <ul class="list mt-sm" id="witnessesList"></ul>
+</div>
+
+<!-- Dame(s) de compagnie -->
+<div class="card mt">
+  <h3 style="font-size:14px;font-weight:950;color:var(--navy);">Dame(s) de compagnie</h3>
+  <p class="muted">Ajoute ta/tes dame(s) de compagnie.</p>
+  <button class="btn btn-outline" id="openAddCompanion">+ Dame de compagnie</button>
+  <ul class="list mt-sm" id="companionsList"></ul>
+</div>
+ 
   <!-- MODAL: Ajouter demoiselle d’honneur -->
   <div class="modal" id="bridesmaidModal" role="dialog" aria-modal="true" aria-label="Ajouter une demoiselle d’honneur">
     <div class="sheet">
@@ -690,43 +897,18 @@
       </div>
 
       <form id="bridesmaidForm" class="form">
-        <label>Nom<input type="text" id="bmName" required /></label>
-        <label>Téléphone (option)<input type="tel" id="bmPhone" placeholder="+241..." /></label>
-        <label>Notes tenue (option)<input type="text" id="bmNotes" placeholder="couleur, style..." /></label>
-        <button class="btn btn-primary btn-full" type="submit">Ajouter</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: Ajouter témoin -->
-  <div class="modal" id="witnessModal" role="dialog" aria-modal="true" aria-label="Ajouter un témoin">
-    <div class="sheet">
-      <div class="sheet-head">
-        <h3>Ajouter un témoin</h3>
-        <button class="icon-btn" data-close="witnessModal">✕</button>
-      </div>
-
-      <form id="witnessForm" class="form">
-        <label>Nom<input type="text" id="wName" required /></label>
-        <label>Téléphone (option)<input type="tel" id="wPhone" placeholder="+241..." /></label>
-        <label>Notes (option)<input type="text" id="wNotes" placeholder="rôle, tenue, etc." /></label>
-        <button class="btn btn-primary btn-full" type="submit">Ajouter</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: Ajouter dame de compagnie -->
-  <div class="modal" id="companionModal" role="dialog" aria-modal="true" aria-label="Ajouter une dame de compagnie">
-    <div class="sheet">
-      <div class="sheet-head">
-        <h3>Ajouter une dame de compagnie</h3>
-        <button class="icon-btn" data-close="companionModal">✕</button>
-      </div>
-
-      <form id="companionForm" class="form">
-        <label>Nom<input type="text" id="cName" required /></label>
-        <label>Téléphone (option)<input type="tel" id="cPhone" placeholder="+241..." /></label>
-        <label>Notes (option)<input type="text" id="cNotes" placeholder="rôle, tenue, etc." /></label>
+        <label>
+          Nom
+          <input type="text" id="bmName" required />
+        </label>
+        <label>
+          Téléphone (option)
+          <input type="tel" id="bmPhone" placeholder="+241..." />
+        </label>
+        <label>
+          Notes tenue (option)
+          <input type="text" id="bmNotes" placeholder="couleur, style..." />
+        </label>
         <button class="btn btn-primary btn-full" type="submit">Ajouter</button>
       </form>
     </div>
@@ -739,12 +921,14 @@
       try { return new Intl.NumberFormat("fr-FR").format(n) + " FCFA"; }
       catch { return n + " FCFA"; }
     }
+
     function todayISO(){
       const d = new Date();
       const m = String(d.getMonth()+1).padStart(2,'0');
       const day = String(d.getDate()).padStart(2,'0');
       return `${d.getFullYear()}-${m}-${day}`;
     }
+
     function daysUntil(dateISO){
       const target = new Date(dateISO + "T00:00:00");
       const now = new Date();
@@ -761,7 +945,13 @@
       const wdISO = weddingDate.toISOString().slice(0,10);
 
       const state = {
-        profile: { weddingDate: wdISO, budgetBase: 3000000, cashOnHand: 500000, targetAmount: 2000000, targetDate: "" },
+        profile: {
+          weddingDate: wdISO,
+          budgetBase: 3000000,
+          cashOnHand: 500000,
+          targetAmount: 2000000,
+          targetDate: ""
+        },
         tasks: [
           { title: "Fixer la date", category: "Annonce & date", status: "todo" },
           { title: "Établir la liste des invités", category: "Invitations", status: "todo" },
@@ -773,24 +963,29 @@
         ],
         guests: [
           { name: "Maman", phone: "", group: "Famille", rsvp: "confirmed" },
-          { name: "Papa", phone: "", group: "Famille", rsvp: "confirmed" }
+          { name: "Papa", phone: "", group: "Famille", rsvp: "confirmed" },
+          { name: "Tante Sarah", phone: "", group: "Famille", rsvp: "pending" },
+          { name: "Ami proche", phone: "", group: "Amis", rsvp: "pending" }
         ],
         bridesmaids: [
           { name: "Meilleure amie", phone: "", notes: "Demoiselle d’honneur", status: "pending" }
         ],
         witnesses: [
-          { name: "Témoin 1", phone: "", notes: "Témoin principal" }
-        ],
-        companions: [
-          { name: "Dame de compagnie", phone: "", notes: "" }
-        ]
+  { name: "Témoin 1", phone: "", notes: "Témoin principal" }
+],
+companions: [
+  { name: "Dame de compagnie", phone: "", notes: "" }
+]
+
       };
 
       localStorage.setItem(KEY, JSON.stringify(state));
       return state;
     }
 
-    function saveState(state){ localStorage.setItem(KEY, JSON.stringify(state)); }
+    function saveState(state){
+      localStorage.setItem(KEY, JSON.stringify(state));
+    }
 
     const tabs = document.querySelectorAll(".tab");
     const pages = {
@@ -815,12 +1010,31 @@
       if(closeId) closeModal(closeId);
       if(e.target.classList.contains("modal")) e.target.classList.remove("open");
     });
+    document.addEventListener("click", (e) => {
+  const idx = e.target?.dataset?.delW;
+  if(idx === undefined) return;
+  const state = loadState();
+  state.witnesses.splice(Number(idx), 1);
+  saveState(state);
+  render();
+});
+
+document.addEventListener("click", (e) => {
+  const idx = e.target?.dataset?.delC;
+  if(idx === undefined) return;
+  const state = loadState();
+  state.companions.splice(Number(idx), 1);
+  saveState(state);
+  render();
+});
+
 
     function labelRsvp(v){
       if(v === "confirmed") return "Confirmé";
       if(v === "declined") return "Refus";
       return "En attente";
     }
+
     function escapeHtml(s){
       return String(s ?? "").replace(/[&<>"']/g, (m) => ({
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
@@ -829,7 +1043,7 @@
 
     function render(){
       const state = loadState();
-      const { profile, tasks, expenses, guests, bridesmaids, witnesses, companions } = state;
+      const { profile, tasks, expenses, guests, bridesmaids } = state;
 
       document.getElementById("countdown").textContent = "J-" + daysUntil(profile.weddingDate);
 
@@ -951,49 +1165,50 @@
           `;
           bmUl.appendChild(li);
         });
-      }
+      } 
+      // Witnesses list
+const wUl = document.getElementById("witnessesList");
+wUl.innerHTML = "";
+if(!state.witnesses?.length){
+  wUl.innerHTML = `<li class="item muted">Aucun témoin ajouté.</li>`;
+} else {
+  state.witnesses.forEach((w, i) => {
+    const li = document.createElement("li");
+    li.className = "item";
+    li.innerHTML = `
+      <div class="item-left">
+        <div>
+          <div class="item-title">${escapeHtml(w.name)}</div>
+          <div class="item-sub">${escapeHtml(w.notes || "Témoin")} ${w.phone ? "• " + escapeHtml(w.phone) : ""}</div>
+        </div>
+      </div>
+      <button class="mini-btn danger" data-del-w="${i}">Suppr</button>
+    `;
+    wUl.appendChild(li);
+  });
+}
 
-      const wUl = document.getElementById("witnessesList");
-      wUl.innerHTML = "";
-      if(!witnesses.length){
-        wUl.innerHTML = `<li class="item muted">Aucun témoin ajouté.</li>`;
-      } else {
-        witnesses.forEach((w, i) => {
-          const li = document.createElement("li");
-          li.className = "item";
-          li.innerHTML = `
-            <div class="item-left">
-              <div>
-                <div class="item-title">${escapeHtml(w.name)}</div>
-                <div class="item-sub">${escapeHtml(w.notes || "Témoin")} ${w.phone ? "• " + escapeHtml(w.phone) : ""}</div>
-              </div>
-            </div>
-            <button class="mini-btn danger" data-del-w="${i}">Suppr</button>
-          `;
-          wUl.appendChild(li);
-        });
-      }
-
-      const cUl = document.getElementById("companionsList");
-      cUl.innerHTML = "";
-      if(!companions.length){
-        cUl.innerHTML = `<li class="item muted">Aucune dame de compagnie ajoutée.</li>`;
-      } else {
-        companions.forEach((c, i) => {
-          const li = document.createElement("li");
-          li.className = "item";
-          li.innerHTML = `
-            <div class="item-left">
-              <div>
-                <div class="item-title">${escapeHtml(c.name)}</div>
-                <div class="item-sub">${escapeHtml(c.notes || "Dame de compagnie")} ${c.phone ? "• " + escapeHtml(c.phone) : ""}</div>
-              </div>
-            </div>
-            <button class="mini-btn danger" data-del-c="${i}">Suppr</button>
-          `;
-          cUl.appendChild(li);
-        });
-      }
+// Companions list
+const cUl = document.getElementById("companionsList");
+cUl.innerHTML = "";
+if(!state.companions?.length){
+  cUl.innerHTML = `<li class="item muted">Aucune dame de compagnie ajoutée.</li>`;
+} else {
+  state.companions.forEach((c, i) => {
+    const li = document.createElement("li");
+    li.className = "item";
+    li.innerHTML = `
+      <div class="item-left">
+        <div>
+          <div class="item-title">${escapeHtml(c.name)}</div>
+          <div class="item-sub">${escapeHtml(c.notes || "Dame de compagnie")} ${c.phone ? "• " + escapeHtml(c.phone) : ""}</div>
+        </div>
+      </div>
+      <button class="mini-btn danger" data-del-c="${i}">Suppr</button>
+    `;
+    cUl.appendChild(li);
+  });
+}
 
       document.getElementById("weddingDate").value = profile.weddingDate;
       document.getElementById("budgetBaseInput").value = profile.budgetBase;
@@ -1002,20 +1217,18 @@
       document.getElementById("targetDateInput").value = profile.targetDate || "";
     }
 
-    // Navigation
     document.querySelectorAll("[data-go]").forEach(btn=>{
       btn.addEventListener("click", ()=> go(btn.dataset.go));
     });
 
-    // Open modals
     document.getElementById("openSettings").addEventListener("click", ()=> openModal("settingsModal"));
     document.getElementById("openAddExpense").addEventListener("click", ()=> openModal("expenseModal"));
     document.getElementById("openAddGuest").addEventListener("click", ()=> openModal("guestModal"));
     document.getElementById("openAddBridesmaid").addEventListener("click", ()=> openModal("bridesmaidModal"));
     document.getElementById("openAddWitness").addEventListener("click", ()=> openModal("witnessModal"));
-    document.getElementById("openAddCompanion").addEventListener("click", ()=> openModal("companionModal"));
+document.getElementById("openAddCompanion").addEventListener("click", ()=> openModal("companionModal"));
 
-    // Mark task done
+
     document.addEventListener("click", (e) => {
       const title = e.target?.dataset?.done;
       if(!title) return;
@@ -1024,7 +1237,6 @@
       if(t){ t.status = "done"; saveState(state); render(); }
     });
 
-    // Delete handlers
     document.addEventListener("click", (e) => {
       const idx = e.target?.dataset?.delExp;
       if(idx === undefined) return;
@@ -1033,6 +1245,7 @@
       saveState(state);
       render();
     });
+
     document.addEventListener("click", (e) => {
       const idx = e.target?.dataset?.delGuest;
       if(idx === undefined) return;
@@ -1041,6 +1254,7 @@
       saveState(state);
       render();
     });
+
     document.addEventListener("click", (e) => {
       const idx = e.target?.dataset?.delBm;
       if(idx === undefined) return;
@@ -1049,24 +1263,7 @@
       saveState(state);
       render();
     });
-    document.addEventListener("click", (e) => {
-      const idx = e.target?.dataset?.delW;
-      if(idx === undefined) return;
-      const state = loadState();
-      state.witnesses.splice(Number(idx), 1);
-      saveState(state);
-      render();
-    });
-    document.addEventListener("click", (e) => {
-      const idx = e.target?.dataset?.delC;
-      if(idx === undefined) return;
-      const state = loadState();
-      state.companions.splice(Number(idx), 1);
-      saveState(state);
-      render();
-    });
 
-    // Forms
     document.getElementById("settingsForm").addEventListener("submit", (e)=>{
       e.preventDefault();
       const state = loadState();
@@ -1127,44 +1324,47 @@
       render();
     });
 
-    document.getElementById("witnessForm").addEventListener("submit", (e)=>{
-      e.preventDefault();
-      const state = loadState();
-      state.witnesses = state.witnesses || [];
-      state.witnesses.push({
-        name: document.getElementById("wName").value.trim(),
-        phone: document.getElementById("wPhone").value.trim(),
-        notes: document.getElementById("wNotes").value.trim()
-      });
-      saveState(state);
-      closeModal("witnessModal");
-      e.target.reset();
-      render();
-    });
-
-    document.getElementById("companionForm").addEventListener("submit", (e)=>{
-      e.preventDefault();
-      const state = loadState();
-      state.companions = state.companions || [];
-      state.companions.push({
-        name: document.getElementById("cName").value.trim(),
-        phone: document.getElementById("cPhone").value.trim(),
-        notes: document.getElementById("cNotes").value.trim()
-      });
-      saveState(state);
-      closeModal("companionModal");
-      e.target.reset();
-      render();
-    });
-
     // Init
     render();
     go("home");
-
-    // PWA SW
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/Casamento-Keshya/sw.js");
-    }
+    navigator.serviceWorker.register("/Casamento-Keshya/sw.js");
+  }
+    document.getElementById("witnessForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const state = loadState();
+  state.witnesses = state.witnesses || [];
+  state.witnesses.push({
+    name: document.getElementById("wName").value.trim(),
+    phone: document.getElementById("wPhone").value.trim(),
+    notes: document.getElementById("wNotes").value.trim()
+  });
+  saveState(state);
+  closeModal("witnessModal");
+  e.target.reset();
+  render();
+});
+
+document.getElementById("companionForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const state = loadState();
+  state.companions = state.companions || [];
+  state.companions.push({
+    name: document.getElementById("cName").value.trim(),
+    phone: document.getElementById("cPhone").value.trim(),
+    notes: document.getElementById("cNotes").value.trim()
+  });
+  saveState(state);
+  closeModal("companionModal");
+  e.target.reset();
+  render();
+});
+
   </script>
 </body>
 </html>
+
+
+
+
+
