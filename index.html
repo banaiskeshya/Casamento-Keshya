@@ -915,169 +915,153 @@ body::after{
     </div>
   </div>
 
-  <script>
-    const KEY = "wedding_app_v2";
+<script>
+  const KEY = "wedding_app_v2";
 
-    function formatMoney(n){
-      try { return new Intl.NumberFormat("fr-FR").format(n) + " FCFA"; }
-      catch { return n + " FCFA"; }
-    }
+  function formatMoney(n){
+    try { return new Intl.NumberFormat("fr-FR").format(n) + " FCFA"; }
+    catch { return n + " FCFA"; }
+  }
 
-    function todayISO(){
-      const d = new Date();
-      const m = String(d.getMonth()+1).padStart(2,'0');
-      const day = String(d.getDate()).padStart(2,'0');
-      return `${d.getFullYear()}-${m}-${day}`;
-    }
+  function todayISO(){
+    const d = new Date();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${d.getFullYear()}-${m}-${day}`;
+  }
 
-    function daysUntil(dateISO){
-      const target = new Date(dateISO + "T00:00:00");
-      const now = new Date();
-      const diff = target.getTime() - new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-      return Math.max(0, Math.ceil(diff / (1000*60*60*24)));
-    }
+  function daysUntil(dateISO){
+    const target = new Date(dateISO + "T00:00:00");
+    const now = new Date();
+    const diff = target.getTime() - new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    return Math.max(0, Math.ceil(diff / (1000*60*60*24)));
+  }
 
-    function loadState(){
-      const raw = localStorage.getItem(KEY);
-      if(raw) return JSON.parse(raw);
+  function loadState(){
+    const raw = localStorage.getItem(KEY);
+    if(raw) return JSON.parse(raw);
 
-      const weddingDate = new Date();
-      weddingDate.setDate(weddingDate.getDate() + 120);
-      const wdISO = weddingDate.toISOString().slice(0,10);
+    const weddingDate = new Date();
+    weddingDate.setDate(weddingDate.getDate() + 120);
+    const wdISO = weddingDate.toISOString().slice(0,10);
 
-      const state = {
-        profile: {
-          weddingDate: wdISO,
-          budgetBase: 3000000,
-          cashOnHand: 500000,
-          targetAmount: 2000000,
-          targetDate: ""
-        },
-        tasks: [
-          { title: "Fixer la date", category: "Annonce & date", status: "todo" },
-          { title: "Établir la liste des invités", category: "Invitations", status: "todo" },
-          { title: "Choisir le modèle de robe", category: "Tenues", status: "todo" },
-          { title: "Comparer les traiteurs", category: "Prestataires", status: "todo" }
-        ],
-        expenses: [
-          { amount: 50000, category: "Administratif", date: todayISO(), note: "Dossier / photocopies", isPaid: true }
-        ],
-        guests: [
-          { name: "Maman", phone: "", group: "Famille", rsvp: "confirmed" },
-          { name: "Papa", phone: "", group: "Famille", rsvp: "confirmed" },
-          { name: "Tante Sarah", phone: "", group: "Famille", rsvp: "pending" },
-          { name: "Ami proche", phone: "", group: "Amis", rsvp: "pending" }
-        ],
-        bridesmaids: [
-          { name: "Meilleure amie", phone: "", notes: "Demoiselle d’honneur", status: "pending" }
-        ],
-        witnesses: [
-  { name: "Témoin 1", phone: "", notes: "Témoin principal" }
-],
-companions: [
-  { name: "Dame de compagnie", phone: "", notes: "" }
-]
-
-      };
-
-      localStorage.setItem(KEY, JSON.stringify(state));
-      return state;
-    }
-
-    function saveState(state){
-      localStorage.setItem(KEY, JSON.stringify(state));
-    }
-
-    const tabs = document.querySelectorAll(".tab");
-    const pages = {
-      home: document.getElementById("page-home"),
-      checklist: document.getElementById("page-checklist"),
-      budget: document.getElementById("page-budget"),
-      guests: document.getElementById("page-guests"),
-      inspi: document.getElementById("page-inspi"),
+    const state = {
+      profile: {
+        weddingDate: wdISO,
+        budgetBase: 3000000,
+        cashOnHand: 500000,
+        targetAmount: 2000000,
+        targetDate: ""
+      },
+      tasks: [
+        { title: "Fixer la date", category: "Annonce & date", status: "todo" },
+        { title: "Établir la liste des invités", category: "Invitations", status: "todo" },
+        { title: "Choisir le modèle de robe", category: "Tenues", status: "todo" },
+        { title: "Comparer les traiteurs", category: "Prestataires", status: "todo" }
+      ],
+      expenses: [
+        { amount: 50000, category: "Administratif", date: todayISO(), note: "Dossier / photocopies", isPaid: true }
+      ],
+      guests: [
+        { name: "Maman", phone: "", group: "Famille", rsvp: "confirmed" },
+        { name: "Papa", phone: "", group: "Famille", rsvp: "confirmed" },
+        { name: "Tante Sarah", phone: "", group: "Famille", rsvp: "pending" },
+        { name: "Ami proche", phone: "", group: "Amis", rsvp: "pending" }
+      ],
+      bridesmaids: [
+        { name: "Meilleure amie", phone: "", notes: "Demoiselle d’honneur", status: "pending" }
+      ],
+      witnesses: [
+        { name: "Témoin 1", phone: "", notes: "Témoin principal" }
+      ],
+      companions: [
+        { name: "Dame de compagnie", phone: "", notes: "" }
+      ]
     };
 
-    function go(pageKey){
-      Object.values(pages).forEach(p => p.classList.remove("active"));
-      pages[pageKey].classList.add("active");
-      tabs.forEach(t => t.classList.toggle("active", t.dataset.go === pageKey));
-    }
+    localStorage.setItem(KEY, JSON.stringify(state));
+    return state;
+  }
 
-    function openModal(id){ document.getElementById(id).classList.add("open"); }
-    function closeModal(id){ document.getElementById(id).classList.remove("open"); }
-document.addEventListener("click", (e) => {
-  const closeId = e.target?.dataset?.close;
-  if(closeId) closeModal(closeId);
-  if(e.target.classList.contains("modal")) e.target.classList.remove("open");
-});
+  function saveState(state){
+    localStorage.setItem(KEY, JSON.stringify(state));
+  }
 
-    document.addEventListener("click", (e) => {
-  const idx = e.target?.dataset?.delW;
-  if(idx === undefined) return;
-  const state = loadState();
-  state.witnesses = state.witnesses || [];
-  state.witnesses.splice(Number(idx), 1);
-  saveState(state);
-  render();
-});
+  const tabs = document.querySelectorAll(".tab");
+  const pages = {
+    home: document.getElementById("page-home"),
+    checklist: document.getElementById("page-checklist"),
+    budget: document.getElementById("page-budget"),
+    guests: document.getElementById("page-guests"),
+    inspi: document.getElementById("page-inspi"),
+  };
 
-document.addEventListener("click", (e) => {
-  const idx = e.target?.dataset?.delC;
-  if(idx === undefined) return;
-  const state = loadState();
-  state.companions = state.companions || [];
-  state.companions.splice(Number(idx), 1);
-  saveState(state);
-  render();
-});
+  function go(pageKey){
+    Object.values(pages).forEach(p => p.classList.remove("active"));
+    pages[pageKey].classList.add("active");
+    tabs.forEach(t => t.classList.toggle("active", t.dataset.go === pageKey));
+  }
 
+  function openModal(id){ document.getElementById(id).classList.add("open"); }
+  function closeModal(id){ document.getElementById(id).classList.remove("open"); }
 
-    function labelRsvp(v){
-      if(v === "confirmed") return "Confirmé";
-      if(v === "declined") return "Refus";
-      return "En attente";
-    }
+  function labelRsvp(v){
+    if(v === "confirmed") return "Confirmé";
+    if(v === "declined") return "Refus";
+    return "En attente";
+  }
 
-    function escapeHtml(s){
-      return String(s ?? "").replace(/[&<>"']/g, (m) => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-      }[m]));
-    }
+  function escapeHtml(s){
+    return String(s ?? "").replace(/[&<>"']/g, (m) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[m]));
+  }
 
-    function render(){
-      const state = loadState();
-      const { profile, tasks, expenses, guests, bridesmaids, witnesses, companions } = state;
+  function render(){
+    const state = loadState();
+    const { profile, tasks, expenses, guests, bridesmaids, witnesses, companions } = state;
 
-      document.getElementById("countdown").textContent = "J-" + daysUntil(profile.weddingDate);
+    // Countdown
+    document.getElementById("countdown").textContent = "J-" + daysUntil(profile.weddingDate);
 
-      const done = tasks.filter(t => t.status === "done").length;
-      const pct = tasks.length ? Math.round((done / tasks.length) * 100) : 0;
-      document.getElementById("progressFill").style.width = pct + "%";
-      document.getElementById("progressMeta").textContent = `${pct}% terminé • ${done}/${tasks.length} tâches`;
+    // Progress tasks
+    const done = tasks.filter(t => t.status === "done").length;
+    const pct = tasks.length ? Math.round((done / tasks.length) * 100) : 0;
+    document.getElementById("progressFill").style.width = pct + "%";
+    document.getElementById("progressMeta").textContent = `${pct}% terminé • ${done}/${tasks.length} tâches`;
 
-      document.getElementById("guestsCount").textContent = guests.length;
-      document.getElementById("bridesmaidsCount").textContent = bridesmaids.length;
+    // Quick counts
+    document.getElementById("guestsCount").textContent = guests.length;
+    document.getElementById("bridesmaidsCount").textContent = bridesmaids.length;
 
-      const totalSpent = expenses.reduce((s,e)=>s + Number(e.amount||0), 0);
-      const remaining = Math.max(0, profile.budgetBase - totalSpent);
-      const missingToTarget = Math.max(0, profile.targetAmount - profile.cashOnHand);
+    // Budget calcs
+    const totalSpent = expenses.reduce((s,e)=>s + Number(e.amount||0), 0);
+    const remaining = Math.max(0, profile.budgetBase - totalSpent);
+    const missingToTarget = Math.max(0, profile.targetAmount - profile.cashOnHand);
 
-      const setText = (id, val) => document.getElementById(id).textContent = val;
+    const setText = (id, val) => {
+      const el = document.getElementById(id);
+      if(el) el.textContent = val;
+    };
 
-      setText("budgetBase", formatMoney(profile.budgetBase));
-      setText("cashOnHand", formatMoney(profile.cashOnHand));
-      setText("targetAmount", formatMoney(profile.targetAmount));
-      setText("totalSpent", formatMoney(totalSpent));
+    // Home stats
+    setText("budgetBase", formatMoney(profile.budgetBase));
+    setText("cashOnHand", formatMoney(profile.cashOnHand));
+    setText("targetAmount", formatMoney(profile.targetAmount));
+    setText("totalSpent", formatMoney(totalSpent));
 
-      setText("b_budgetBase", formatMoney(profile.budgetBase));
-      setText("b_cashOnHand", formatMoney(profile.cashOnHand));
-      setText("b_targetAmount", formatMoney(profile.targetAmount));
-      setText("b_totalSpent", formatMoney(totalSpent));
-      setText("b_remaining", formatMoney(remaining));
-      setText("b_missingToTarget", formatMoney(missingToTarget));
+    // Budget page stats
+    setText("b_budgetBase", formatMoney(profile.budgetBase));
+    setText("b_cashOnHand", formatMoney(profile.cashOnHand));
+    setText("b_targetAmount", formatMoney(profile.targetAmount));
+    setText("b_totalSpent", formatMoney(totalSpent));
+    setText("b_remaining", formatMoney(remaining));
+    setText("b_missingToTarget", formatMoney(missingToTarget));
 
-      const next = tasks.filter(t => t.status !== "done").slice(0,4);
-      const ulNext = document.getElementById("nextTasks");
+    // Next tasks
+    const next = tasks.filter(t => t.status !== "done").slice(0,4);
+    const ulNext = document.getElementById("nextTasks");
+    if(ulNext){
       ulNext.innerHTML = "";
       if(!next.length){
         ulNext.innerHTML = `<li class="item muted">Aucune tâche en attente 🎉</li>`;
@@ -1098,8 +1082,11 @@ document.addEventListener("click", (e) => {
           ulNext.appendChild(li);
         });
       }
+    }
 
-      const expUl = document.getElementById("expensesList");
+    // Expenses list
+    const expUl = document.getElementById("expensesList");
+    if(expUl){
       expUl.innerHTML = "";
       if(!expenses.length){
         expUl.innerHTML = `<li class="item muted">Aucune dépense.</li>`;
@@ -1120,15 +1107,18 @@ document.addEventListener("click", (e) => {
           expUl.appendChild(li);
         });
       }
+    }
 
-      const confirmed = guests.filter(g => g.rsvp === "confirmed").length;
-      const pending = guests.filter(g => g.rsvp === "pending").length;
+    // Guests stats
+    const confirmed = guests.filter(g => g.rsvp === "confirmed").length;
+    const pending = guests.filter(g => g.rsvp === "pending").length;
+    setText("g_total", guests.length);
+    setText("g_confirmed", confirmed);
+    setText("g_pending", pending);
 
-      setText("g_total", guests.length);
-      setText("g_confirmed", confirmed);
-      setText("g_pending", pending);
-
-      const gUl = document.getElementById("guestsList");
+    // Guests list
+    const gUl = document.getElementById("guestsList");
+    if(gUl){
       gUl.innerHTML = "";
       if(!guests.length){
         gUl.innerHTML = `<li class="item muted">Aucun invité.</li>`;
@@ -1148,8 +1138,11 @@ document.addEventListener("click", (e) => {
           gUl.appendChild(li);
         });
       }
+    }
 
-      const bmUl = document.getElementById("bridesmaidsList");
+    // Bridesmaids list
+    const bmUl = document.getElementById("bridesmaidsList");
+    if(bmUl){
       bmUl.innerHTML = "";
       if(!bridesmaids.length){
         bmUl.innerHTML = `<li class="item muted">Aucune demoiselle d’honneur ajoutée.</li>`;
@@ -1168,210 +1161,259 @@ document.addEventListener("click", (e) => {
           `;
           bmUl.appendChild(li);
         });
-      } 
-      // Witnesses list
-const wUl = document.getElementById("witnessesList");
-wUl.innerHTML = "";
-if(!state.witnesses?.length){
-  wUl.innerHTML = `<li class="item muted">Aucun témoin ajouté.</li>`;
-} else {
-  state.witnesses.forEach((w, i) => {
-    const li = document.createElement("li");
-    li.className = "item";
-    li.innerHTML = `
-      <div class="item-left">
-        <div>
-          <div class="item-title">${escapeHtml(w.name)}</div>
-          <div class="item-sub">${escapeHtml(w.notes || "Témoin")} ${w.phone ? "• " + escapeHtml(w.phone) : ""}</div>
-        </div>
-      </div>
-      <button class="mini-btn danger" data-del-w="${i}">Suppr</button>
-    `;
-    wUl.appendChild(li);
-  });
-}
-
-// Companions list
-const cUl = document.getElementById("companionsList");
-cUl.innerHTML = "";
-if(!state.companions?.length){
-  cUl.innerHTML = `<li class="item muted">Aucune dame de compagnie ajoutée.</li>`;
-} else {
-  state.companions.forEach((c, i) => {
-    const li = document.createElement("li");
-    li.className = "item";
-    li.innerHTML = `
-      <div class="item-left">
-        <div>
-          <div class="item-title">${escapeHtml(c.name)}</div>
-          <div class="item-sub">${escapeHtml(c.notes || "Dame de compagnie")} ${c.phone ? "• " + escapeHtml(c.phone) : ""}</div>
-        </div>
-      </div>
-      <button class="mini-btn danger" data-del-c="${i}">Suppr</button>
-    `;
-    cUl.appendChild(li);
-  });
-}
-
-      document.getElementById("weddingDate").value = profile.weddingDate;
-      document.getElementById("budgetBaseInput").value = profile.budgetBase;
-      document.getElementById("cashOnHandInput").value = profile.cashOnHand;
-      document.getElementById("targetAmountInput").value = profile.targetAmount;
-      document.getElementById("targetDateInput").value = profile.targetDate || "";
+      }
     }
 
-    document.querySelectorAll("[data-go]").forEach(btn=>{
-      btn.addEventListener("click", ()=> go(btn.dataset.go));
-    });
+    // Witnesses list
+    const wUl = document.getElementById("witnessesList");
+    if(wUl){
+      wUl.innerHTML = "";
+      if(!witnesses?.length){
+        wUl.innerHTML = `<li class="item muted">Aucun témoin ajouté.</li>`;
+      } else {
+        witnesses.forEach((w, i) => {
+          const li = document.createElement("li");
+          li.className = "item";
+          li.innerHTML = `
+            <div class="item-left">
+              <div>
+                <div class="item-title">${escapeHtml(w.name)}</div>
+                <div class="item-sub">${escapeHtml(w.notes || "Témoin")} ${w.phone ? "• " + escapeHtml(w.phone) : ""}</div>
+              </div>
+            </div>
+            <button class="mini-btn danger" data-del-w="${i}">Suppr</button>
+          `;
+          wUl.appendChild(li);
+        });
+      }
+    }
 
-    document.getElementById("openSettings").addEventListener("click", ()=> openModal("settingsModal"));
-    document.getElementById("openAddExpense").addEventListener("click", ()=> openModal("expenseModal"));
-    document.getElementById("openAddGuest").addEventListener("click", ()=> openModal("guestModal"));
-    document.getElementById("openAddBridesmaid").addEventListener("click", ()=> openModal("bridesmaidModal"));
-    document.getElementById("openAddWitness").addEventListener("click", ()=> openModal("witnessModal"));
-document.getElementById("openAddCompanion").addEventListener("click", ()=> openModal("companionModal"));
+    // Companions list
+    const cUl = document.getElementById("companionsList");
+    if(cUl){
+      cUl.innerHTML = "";
+      if(!companions?.length){
+        cUl.innerHTML = `<li class="item muted">Aucune dame de compagnie ajoutée.</li>`;
+      } else {
+        companions.forEach((c, i) => {
+          const li = document.createElement("li");
+          li.className = "item";
+          li.innerHTML = `
+            <div class="item-left">
+              <div>
+                <div class="item-title">${escapeHtml(c.name)}</div>
+                <div class="item-sub">${escapeHtml(c.notes || "Dame de compagnie")} ${c.phone ? "• " + escapeHtml(c.phone) : ""}</div>
+              </div>
+            </div>
+            <button class="mini-btn danger" data-del-c="${i}">Suppr</button>
+          `;
+          cUl.appendChild(li);
+        });
+      }
+    }
 
+    // Settings form values
+    const wd = document.getElementById("weddingDate");
+    const bb = document.getElementById("budgetBaseInput");
+    const ch = document.getElementById("cashOnHandInput");
+    const ta = document.getElementById("targetAmountInput");
+    const td = document.getElementById("targetDateInput");
+    if(wd) wd.value = profile.weddingDate;
+    if(bb) bb.value = profile.budgetBase;
+    if(ch) ch.value = profile.cashOnHand;
+    if(ta) ta.value = profile.targetAmount;
+    if(td) td.value = profile.targetDate || "";
+  }
 
-    document.addEventListener("click", (e) => {
-      const title = e.target?.dataset?.done;
-      if(!title) return;
-      const state = loadState();
-      const t = state.tasks.find(x => x.title === title && x.status !== "done");
-      if(t){ t.status = "done"; saveState(state); render(); }
-    });
-
-    document.addEventListener("click", (e) => {
-      const idx = e.target?.dataset?.delExp;
-      if(idx === undefined) return;
-      const state = loadState();
-      state.expenses.splice(Number(idx), 1);
-      saveState(state);
-      render();
-    });
-
-    document.addEventListener("click", (e) => {
-      const idx = e.target?.dataset?.delGuest;
-      if(idx === undefined) return;
-      const state = loadState();
-      state.guests.splice(Number(idx), 1);
-      saveState(state);
-      render();
-    });
-
-    document.addEventListener("click", (e) => {
-      const idx = e.target?.dataset?.delBm;
-      if(idx === undefined) return;
-      const state = loadState();
-      state.bridesmaids.splice(Number(idx), 1);
-      saveState(state);
-      render();
-    });
-
-    document.getElementById("settingsForm").addEventListener("submit", (e)=>{
-      e.preventDefault();
-      const state = loadState();
-      state.profile.weddingDate = document.getElementById("weddingDate").value;
-      state.profile.budgetBase = Number(document.getElementById("budgetBaseInput").value || 0);
-      state.profile.cashOnHand = Number(document.getElementById("cashOnHandInput").value || 0);
-      state.profile.targetAmount = Number(document.getElementById("targetAmountInput").value || 0);
-      state.profile.targetDate = document.getElementById("targetDateInput").value || "";
-      saveState(state);
-      closeModal("settingsModal");
-      render();
-    });
-
-    document.getElementById("expenseForm").addEventListener("submit", (e)=>{
-      e.preventDefault();
-      const state = loadState();
-      state.expenses.push({
-        amount: Number(document.getElementById("expenseAmount").value || 0),
-        category: document.getElementById("expenseCategory").value,
-        date: todayISO(),
-        note: document.getElementById("expenseNote").value.trim(),
-        isPaid: document.getElementById("expensePaid").checked
-      });
-      saveState(state);
-      closeModal("expenseModal");
-      e.target.reset();
-      document.getElementById("expensePaid").checked = true;
-      render();
-    });
-
-    document.getElementById("guestForm").addEventListener("submit", (e)=>{
-      e.preventDefault();
-      const state = loadState();
-      state.guests.push({
-        name: document.getElementById("guestName").value.trim(),
-        phone: document.getElementById("guestPhone").value.trim(),
-        group: document.getElementById("guestGroup").value,
-        rsvp: document.getElementById("guestRsvp").value,
-      });
-      saveState(state);
-      closeModal("guestModal");
-      e.target.reset();
-      render();
-    });
-
-    document.getElementById("bridesmaidForm").addEventListener("submit", (e)=>{
-      e.preventDefault();
-      const state = loadState();
-      state.bridesmaids.push({
-        name: document.getElementById("bmName").value.trim(),
-        phone: document.getElementById("bmPhone").value.trim(),
-        notes: document.getElementById("bmNotes").value.trim(),
-        status: "pending"
-      });
-      saveState(state);
-      closeModal("bridesmaidModal");
-      e.target.reset();
-      render();
-    });
-
-    // Init
-   const wUl = document.getElementById("witnessesList");
-wUl.innerHTML = "";
-if(!witnesses?.length){
-  wUl.innerHTML = `<li class="item muted">Aucun témoin ajouté.</li>`;
-} else {
-  witnesses.forEach((w, i) => {
-    const li = document.createElement("li");
-    li.className = "item";
-    li.innerHTML = `
-      <div class="item-left">
-        <div>
-          <div class="item-title">${escapeHtml(w.name)}</div>
-          <div class="item-sub">${escapeHtml(w.notes || "Témoin")} ${w.phone ? "• " + escapeHtml(w.phone) : ""}</div>
-        </div>
-      </div>
-      <button class="mini-btn danger" data-del-w="${i}">Suppr</button>
-    `;
-    wUl.appendChild(li);
+  // Navigation tabs
+  document.querySelectorAll("[data-go]").forEach(btn=>{
+    btn.addEventListener("click", ()=> go(btn.dataset.go));
   });
-}
 
-const cUl = document.getElementById("companionsList");
-cUl.innerHTML = "";
-if(!companions?.length){
-  cUl.innerHTML = `<li class="item muted">Aucune dame de compagnie ajoutée.</li>`;
-} else {
-  companions.forEach((c, i) => {
-    const li = document.createElement("li");
-    li.className = "item";
-    li.innerHTML = `
-      <div class="item-left">
-        <div>
-          <div class="item-title">${escapeHtml(c.name)}</div>
-          <div class="item-sub">${escapeHtml(c.notes || "Dame de compagnie")} ${c.phone ? "• " + escapeHtml(c.phone) : ""}</div>
-        </div>
-      </div>
-      <button class="mini-btn danger" data-del-c="${i}">Suppr</button>
-    `;
-    cUl.appendChild(li);
+  // Open modals
+  document.getElementById("openSettings")?.addEventListener("click", ()=> openModal("settingsModal"));
+  document.getElementById("openAddExpense")?.addEventListener("click", ()=> openModal("expenseModal"));
+  document.getElementById("openAddGuest")?.addEventListener("click", ()=> openModal("guestModal"));
+  document.getElementById("openAddBridesmaid")?.addEventListener("click", ()=> openModal("bridesmaidModal"));
+  document.getElementById("openAddWitness")?.addEventListener("click", ()=> openModal("witnessModal"));
+  document.getElementById("openAddCompanion")?.addEventListener("click", ()=> openModal("companionModal"));
+
+  // Close modals (X button + click outside sheet)
+  document.addEventListener("click", (e) => {
+    const closeId = e.target?.dataset?.close;
+    if(closeId) closeModal(closeId);
+    if(e.target.classList && e.target.classList.contains("modal")) e.target.classList.remove("open");
   });
-}
-  </script>
+
+  // Mark task done
+  document.addEventListener("click", (e) => {
+    const title = e.target?.dataset?.done;
+    if(!title) return;
+    const state = loadState();
+    const t = state.tasks.find(x => x.title === title && x.status !== "done");
+    if(t){
+      t.status = "done";
+      saveState(state);
+      render();
+    }
+  });
+
+  // Delete expense
+  document.addEventListener("click", (e) => {
+    const idx = e.target?.dataset?.delExp;
+    if(idx === undefined) return;
+    const state = loadState();
+    state.expenses.splice(Number(idx), 1);
+    saveState(state);
+    render();
+  });
+
+  // Delete guest
+  document.addEventListener("click", (e) => {
+    const idx = e.target?.dataset?.delGuest;
+    if(idx === undefined) return;
+    const state = loadState();
+    state.guests.splice(Number(idx), 1);
+    saveState(state);
+    render();
+  });
+
+  // Delete bridesmaid
+  document.addEventListener("click", (e) => {
+    const idx = e.target?.dataset?.delBm;
+    if(idx === undefined) return;
+    const state = loadState();
+    state.bridesmaids.splice(Number(idx), 1);
+    saveState(state);
+    render();
+  });
+
+  // Delete witness
+  document.addEventListener("click", (e) => {
+    const idx = e.target?.dataset?.delW;
+    if(idx === undefined) return;
+    const state = loadState();
+    state.witnesses = state.witnesses || [];
+    state.witnesses.splice(Number(idx), 1);
+    saveState(state);
+    render();
+  });
+
+  // Delete companion
+  document.addEventListener("click", (e) => {
+    const idx = e.target?.dataset?.delC;
+    if(idx === undefined) return;
+    const state = loadState();
+    state.companions = state.companions || [];
+    state.companions.splice(Number(idx), 1);
+    saveState(state);
+    render();
+  });
+
+  // Settings submit
+  document.getElementById("settingsForm")?.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const state = loadState();
+    state.profile.weddingDate = document.getElementById("weddingDate").value;
+    state.profile.budgetBase = Number(document.getElementById("budgetBaseInput").value || 0);
+    state.profile.cashOnHand = Number(document.getElementById("cashOnHandInput").value || 0);
+    state.profile.targetAmount = Number(document.getElementById("targetAmountInput").value || 0);
+    state.profile.targetDate = document.getElementById("targetDateInput").value || "";
+    saveState(state);
+    closeModal("settingsModal");
+    render();
+  });
+
+  // Expense submit
+  document.getElementById("expenseForm")?.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const state = loadState();
+    state.expenses.push({
+      amount: Number(document.getElementById("expenseAmount").value || 0),
+      category: document.getElementById("expenseCategory").value,
+      date: todayISO(),
+      note: document.getElementById("expenseNote").value.trim(),
+      isPaid: document.getElementById("expensePaid").checked
+    });
+    saveState(state);
+    closeModal("expenseModal");
+    e.target.reset();
+    document.getElementById("expensePaid").checked = true;
+    render();
+  });
+
+  // Guest submit
+  document.getElementById("guestForm")?.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const state = loadState();
+    state.guests.push({
+      name: document.getElementById("guestName").value.trim(),
+      phone: document.getElementById("guestPhone").value.trim(),
+      group: document.getElementById("guestGroup").value,
+      rsvp: document.getElementById("guestRsvp").value,
+    });
+    saveState(state);
+    closeModal("guestModal");
+    e.target.reset();
+    render();
+  });
+
+  // Bridesmaid submit
+  document.getElementById("bridesmaidForm")?.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const state = loadState();
+    state.bridesmaids.push({
+      name: document.getElementById("bmName").value.trim(),
+      phone: document.getElementById("bmPhone").value.trim(),
+      notes: document.getElementById("bmNotes").value.trim(),
+      status: "pending"
+    });
+    saveState(state);
+    closeModal("bridesmaidModal");
+    e.target.reset();
+    render();
+  });
+
+  // Witness submit
+  document.getElementById("witnessForm")?.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const state = loadState();
+    state.witnesses = state.witnesses || [];
+    state.witnesses.push({
+      name: document.getElementById("wName").value.trim(),
+      phone: document.getElementById("wPhone").value.trim(),
+      notes: document.getElementById("wNotes").value.trim(),
+    });
+    saveState(state);
+    closeModal("witnessModal");
+    e.target.reset();
+    render();
+  });
+
+  // Companion submit
+  document.getElementById("companionForm")?.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const state = loadState();
+    state.companions = state.companions || [];
+    state.companions.push({
+      name: document.getElementById("cName").value.trim(),
+      phone: document.getElementById("cPhone").value.trim(),
+      notes: document.getElementById("cNotes").value.trim(),
+    });
+    saveState(state);
+    closeModal("companionModal");
+    e.target.reset();
+    render();
+  });
+
+  // Init
+  render();
+  go("home");
+</script>
+
 </body>
 </html>
+
 
 
 
