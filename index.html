@@ -669,6 +669,23 @@ body::after{
           <button class="btn btn-outline" id="openAddBridesmaid">+ Demoiselle d’honneur</button>
           <ul class="list mt-sm" id="bridesmaidsList"></ul>
         </div>
+        
+ <!-- Témoins -->
+<div class="card mt">
+  <h3 style="font-size:14px;font-weight:950;color:var(--navy);">Témoins</h3>
+  <p class="muted">Ajoute tes témoins (ils comptent aussi dans les invités).</p>
+  <button class="btn btn-outline" id="openAddWitness">+ Témoin</button>
+  <ul class="list mt-sm" id="witnessesList"></ul>
+</div>
+
+<!-- Dame(s) de compagnie -->
+<div class="card mt">
+  <h3 style="font-size:14px;font-weight:950;color:var(--navy);">Dame(s) de compagnie</h3>
+  <p class="muted">Ajoute ta/tes dame(s) de compagnie.</p>
+  <button class="btn btn-outline" id="openAddCompanion">+ Dame de compagnie</button>
+  <ul class="list mt-sm" id="companionsList"></ul>
+</div>
+ 
       </section>
 
       <!-- Inspirations (placeholder) -->
@@ -872,22 +889,6 @@ body::after{
   </div>
 </div>
 
- <!-- Témoins -->
-<div class="card mt">
-  <h3 style="font-size:14px;font-weight:950;color:var(--navy);">Témoins</h3>
-  <p class="muted">Ajoute tes témoins (ils comptent aussi dans les invités).</p>
-  <button class="btn btn-outline" id="openAddWitness">+ Témoin</button>
-  <ul class="list mt-sm" id="witnessesList"></ul>
-</div>
-
-<!-- Dame(s) de compagnie -->
-<div class="card mt">
-  <h3 style="font-size:14px;font-weight:950;color:var(--navy);">Dame(s) de compagnie</h3>
-  <p class="muted">Ajoute ta/tes dame(s) de compagnie.</p>
-  <button class="btn btn-outline" id="openAddCompanion">+ Dame de compagnie</button>
-  <ul class="list mt-sm" id="companionsList"></ul>
-</div>
- 
   <!-- MODAL: Ajouter demoiselle d’honneur -->
   <div class="modal" id="bridesmaidModal" role="dialog" aria-modal="true" aria-label="Ajouter une demoiselle d’honneur">
     <div class="sheet">
@@ -1363,6 +1364,7 @@ document.getElementById("companionForm").addEventListener("submit", (e)=>{
   </script>
 </body>
 </html>
+
 
 
 
